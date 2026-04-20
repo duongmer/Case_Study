@@ -1,11 +1,335 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>Tìm phòng trọ</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f5f6fa;
+    margin: 0;
+}
+
+/* FORM */
+.search-box {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.search-box input {
+    padding: 10px;
+    margin: 5px;
+    width: 180px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #2980b9;
+}
+
+/* DANH SÁCH PHÒNG */
+.container {
+    width: 85%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.room {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.room:hover {
+    transform: translateY(-5px);
+}
+
+.room img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.room-content {
+    padding: 15px;
+}
+
+.room h3 {
+    margin: 0 0 10px;
+}
+
+.price {
+    color: red;
+    font-weight: bold;
+}
+
+</style>
 </head>
+
 <body>
-    
+
+<div class="search-box">
+    <form method="GET">
+        <input type<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Danh sách phòng trọ</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f9;
+}
+
+/* HEADER */
+.header {
+    background: #3498db;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+/* SEARCH */
+.search-box {
+    background: white;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.search-box input, .search-box select {
+    padding: 8px;
+    margin: 5px;
+}
+
+/* SECTION */
+.section {
+    margin: 20px;
+}
+
+.section h2 {
+    margin-bottom: 10px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 10px;
+}
+
+.price {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🏠 Tìm phòng trọ</h1>
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+    <input type="number" id="minPrice" placeholder="Giá từ">
+    <input type="number" id="maxPrice" placeholder="Giá đến">
+
+    <select id="location">
+        <option value="">Địa điểm</option>
+        <option value="Vinh">Vinh</option>
+        <option value="Bến Thủy">Bến Thủy</option>
+    </select>
+
+    <select id="utility">
+        <option value="">Tiện ích</option>
+        <option value="wifi">Wifi</option>
+        <option value="dieuhoa">Điều hòa</option>
+    </select>
+
+    <button onclick="search()">Tìm kiếm</button>
+</div>
+
+<!-- KẾT QUẢ SEARCH -->
+<div class="section">
+    <h2>Kết quả tìm kiếm</h2>
+    <div class="grid" id="searchResult"></div>
+</div>
+
+<!-- XEM NHIỀU -->
+<div class="section">
+    <h2>🔥 Xem nhiều nhất</h2>
+    <div class="grid" id="popular"></div>
+</div>
+
+<!-- MỚI -->
+<div class="section">
+    <h2>🆕 Mới đăng</h2>
+    <div class="grid" id="new"></div>
+</div>
+
+<!-- GẦN ĐH VINH -->
+<div class="section">
+    <h2>📍 Gần ĐH Vinh</h2>
+    <div class="grid" id="near"></div>
+</div>
+
+<script>
+// DATA GIẢ
+const rooms = [
+    {
+        id:1,
+        name:"Phòng đẹp trung tâm",
+        price:1500000,
+        location:"Vinh",
+        utility:["wifi"],
+        views:100,
+        isNew:true,
+        nearUni:true,
+        img:"https://via.placeholder.com/300"
+    },
+    {
+        id:2,
+        name:"Phòng giá rẻ",
+        price:800000,
+        location:"Bến Thủy",
+        utility:["wifi","dieuhoa"],
+        views:50,
+        isNew:false,
+        nearUni:true,
+        img:"https://via.placeholder.com/300"
+    },
+    {
+        id:3,
+        name:"Phòng cao cấp",
+        price:3000000,
+        location:"Vinh",
+        utility:["dieuhoa"],
+        views:200,
+        isNew:true,
+        nearUni:false,
+        img:"https://via.placeholder.com/300"
+    }
+];
+
+// HIỂN THỊ
+function render(list, elementId) {
+    let html = "";
+    list.forEach(r => {
+        html += `
+        <div class="card" onclick="goDetail(${r.id})">
+            <img src="${r.img}">
+            <div class="card-content">
+                <h3>${r.name}</h3>
+                <p>${r.location}</p>
+                <p class="price">${r.price.toLocaleString()} VNĐ</p>
+            </div>
+        </div>
+        `;
+    });
+    document.getElementById(elementId).innerHTML = html;
+}
+
+// LOAD
+render(rooms.sort((a,b)=>b.views-a.views).slice(0,3),"popular");
+render(rooms.filter(r=>r.isNew),"new");
+render(rooms.filter(r=>r.nearUni),"near");
+
+// SEARCH
+function search(){
+    let min = document.getElementById("minPrice").value;
+    let max = document.getElementById("maxPrice").value;
+    let location = document.getElementById("location").value;
+    let utility = document.getElementById("utility").value;
+
+    let result = rooms.filter(r => {
+        return (!min || r.price >= min)
+            && (!max || r.price <= max)
+            && (!location || r.location == location)
+            && (!utility || r.utility.includes(utility));
+    });
+
+    render(result,"searchResult");
+}
+
+// CHUYỂN TRANG CHI TIẾT
+function goDetail(id){
+    window.location = "detail.html?id=" + id;
+}
+</script>
+
+</body>
+</html>="text" name="keyword" placeholder="🔍 Tìm theo tên, địa chỉ">
+        <input type="number" name="min_price" placeholder="Giá từ">
+        <input type="number" name="max_price" placeholder="Giá đến">
+        <button type="submit">Tìm kiếm</button>
+    </form>
+</div>
+
+<div class="container">
+<?php while($row = $result->fetch_assoc()): ?>
+    <div class="room">
+        <img src="images/<?php echo $row['hinh_anh']; ?>">
+        
+        <div class="room-content">
+            <h3><?php echo $row['ten_phong']; ?></h3>
+            <p>📍 <?php echo $row['dia_chi']; ?></p>
+            <p class="price"><?php echo number_format($row['gia']); ?> VNĐ</p>
+            <p><?php echo $row['dien_tich']; ?> m²</p>
+        </div>
+    </div>
+<?php endwhile; ?>
+</div>
+
 </body>
 </html>
