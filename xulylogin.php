@@ -59,7 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $_SESSION['user_name'] = $row['Name'];
                 $_SESSION['login_fails'] = 0; // Reset số lần đếm sai
                 
-                redirect("Đăng nhập thành công!", "success", $row['Name']);
+               
+echo "<script>
+    alert('Đăng nhập thành công! Chào " . $row['Name'] . "');
+    window.location.href = 'index.php';
+</script>";
+exit();
             } else {
                 // Sai mật khẩu
                 $_SESSION['login_fails'] = isset($_SESSION['login_fails']) ? $_SESSION['login_fails'] + 1 : 1;
