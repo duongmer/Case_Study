@@ -10,12 +10,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Trang chủ</a></li>
+          <li class="nav-item px-3"><a class="nav-link fw-semibold" href="index.php">Trang chủ</a></li>
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Tìm phòng</a></li>
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Cẩm nang</a></li>
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Hỗ trợ</a></li>
         </ul>
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3"> 
           <a href="#" class="text-decoration-none text-muted fw-bold me-2">Đăng nhập</a>
           <button class="btn btn-dark-round">Đăng tin ngay</button>
         </div>

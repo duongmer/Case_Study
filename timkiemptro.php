@@ -10,21 +10,48 @@
           </h1>
           <p class="lead text-muted mb-5">Hệ thống tìm trọ thông minh lớn nhất Việt Nam. Kết nối chính chủ, thông tin minh bạch, trải nghiệm dễ dàng.</p>
           
-          <div class="search-box mb-4">
-            <div class="search-input-group border-end-0 border-sm-end">
-              <i class="bi bi-geo-alt text-amber"></i>
-              <input type="text" class="form-control border-0 shadow-none fw-bold" placeholder="Bạn muốn ở đâu?">
+          <!-- ✅ FORM TÌM KIẾM - trỏ sang timkiem.php -->
+          <form action="timkiem.php" method="GET">
+            <div class="search-box mb-4">
+              <div class="search-input-group border-end-0 border-sm-end">
+                <i class="bi bi-geo-alt text-amber"></i>
+                <input type="text" name="keyword" class="form-control border-0 shadow-none fw-bold" 
+                       placeholder="Bạn muốn ở đâu? (địa chỉ, tên phòng...)">
+              </div>
+              <div class="search-input-group d-none d-md-flex">
+                <i class="bi bi-buildings text-amber"></i>
+                <select name="loai" class="form-select border-0 shadow-none fw-bold">
+                  <option value="">Loại hình</option>
+                  <option value="Phòng trọ">Phòng trọ</option>
+                  <option value="Căn hộ Studio">Căn hộ Studio</option>
+                  <option value="Nhà nguyên căn">Nhà nguyên căn</option>
+                  <option value="Ở ghép">Ở ghép</option>
+                </select>
+              </div>
+              <div class="search-input-group d-none d-md-flex">
+                <i class="bi bi-cash-coin text-amber"></i>
+                <select name="gia_max" class="form-select border-0 shadow-none fw-bold">
+                  <option value="">Khoảng giá</option>
+                  <option value="2">Dưới 2 triệu</option>
+                  <option value="3">Dưới 3 triệu</option>
+                  <option value="5">Dưới 5 triệu</option>
+                  <option value="8">Dưới 8 triệu</option>
+                  <option value="15">Dưới 15 triệu</option>
+                </select>
+              </div>
+              <button type="submit" class="search-btn">
+                <i class="bi bi-search me-2"></i> Tìm ngay
+              </button>
             </div>
-            <div class="search-input-group d-none d-md-flex">
-              <i class="bi bi-buildings text-amber"></i>
-              <select class="form-select border-0 shadow-none fw-bold">
-                <option>Loại hình</option>
-                <option>Phòng trọ</option>
-                <option>Căn hộ</option>
-                <option>Nhà nguyên căn</option>
-              </select>
-            </div>
-            <button class="search-btn"><i class="bi bi-search me-2"></i> Tìm ngay</button>
+          </form>
+
+          <!-- Quick category links -->
+          <div class="d-flex gap-2 flex-wrap mb-4">
+            <span class="text-muted small fw-bold align-self-center">Tìm nhanh:</span>
+            <a href="timkiem.php?loai=Ph%C3%B2ng+tr%E1%BB%8D" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Phòng trọ</a>
+            <a href="timkiem.php?loai=C%C4%83n+h%E1%BB%99+Studio" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Căn hộ Studio</a>
+            <a href="timkiem.php?gia_max=3" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Dưới 3 triệu</a>
+            <a href="timkiem.php?sap_xep=xem_nhieu" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Xem nhiều nhất</a>
           </div>
           
           <div class="d-flex align-items-center gap-3">
