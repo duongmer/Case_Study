@@ -1,15 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GTPT - Hệ Thống Đăng Tin Phòng Trọ</title>
-    <!-- Font chữ hiện đại -->
+
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Icon FontAwesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -58,8 +57,7 @@
         color: var(--text-gray);
       }
 
-      /* KHUNG CHỨA CHÍNH (Sliding Effect) */
-      .container {
+      KHUNG CHỨA CHÍNH */ .container {
         background-color: var(--white);
         border-radius: 20px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -67,7 +65,7 @@
         overflow: hidden;
         width: 100%;
         max-width: 900px;
-        min-height: 600px; /* Chiều cao đủ chứa các nút mxh */
+        min-height: 650px;
       }
 
       .form-container {
@@ -76,8 +74,6 @@
         height: 100%;
         transition: all 0.6s ease-in-out;
       }
-
-      /* Vùng bọc Form để dễ căn giữa */
       .form-wrapper {
         background-color: var(--white);
         display: flex;
@@ -89,12 +85,10 @@
         text-align: center;
         width: 100%;
       }
-
       form {
         width: 100%;
       }
 
-      /* Nửa Form Đăng Nhập */
       .sign-in-container {
         left: 0;
         width: 50%;
@@ -105,7 +99,6 @@
         opacity: 0;
       }
 
-      /* Nửa Form Đăng Ký */
       .sign-up-container {
         left: 0;
         width: 50%;
@@ -132,7 +125,6 @@
         }
       }
 
-      /* KHUNG CHỨA MẠNG XÃ HỘI */
       .social-container {
         display: flex;
         gap: 15px;
@@ -141,8 +133,7 @@
       }
       .social-container form {
         width: 50%;
-      } /* Mỗi nút chiếm nửa */
-
+      }
       .social-btn {
         width: 100%;
         padding: 10px;
@@ -156,32 +147,25 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        transition: all 0.3s ease;
+        transition: all 0.3s;
         color: var(--text-dark);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
       }
       .social-btn.fb:hover {
         background: #4267b2;
         color: white;
         border-color: #4267b2;
-        box-shadow: 0 4px 10px rgba(66, 103, 178, 0.3);
       }
       .social-btn.gg:hover {
         background: #db4437;
         color: white;
         border-color: #db4437;
-        box-shadow: 0 4px 10px rgba(219, 68, 55, 0.3);
-      }
-      .social-btn i {
-        font-size: 16px;
       }
 
-      /* Đường gạch phân cách */
       .divider {
         width: 100%;
         display: flex;
         align-items: center;
-        margin: 10px 0 20px;
+        margin: 10px 0 15px;
       }
       .divider::before,
       .divider::after {
@@ -194,21 +178,20 @@
         color: #9ca3af;
         font-size: 12px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
 
-      /* NHẬP LIỆU CƠ BẢN */
       .input-group {
         position: relative;
         width: 100%;
         margin-bottom: 15px;
       }
-      .input-group i {
+      .input-group i:not(.captcha-refresh) {
         position: absolute;
         left: 15px;
         top: 50%;
         transform: translateY(-50%);
         color: #9ca3af;
+        z-index: 2;
       }
       .input-group input {
         background-color: #f9fafb;
@@ -226,7 +209,52 @@
         box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
       }
 
-      /* Nút bấm chính */
+      .captcha-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .captcha-box {
+        flex-shrink: 0;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #f3f4f6;
+        overflow: hidden;
+        position: relative;
+      }
+      .captcha-refresh {
+        flex-shrink: 0;
+        cursor: pointer;
+        color: var(--primary);
+        padding: 10px;
+        border-radius: 8px;
+        background: #e0e7ff;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .captcha-refresh:hover {
+        background: var(--primary);
+        color: white;
+        transform: rotate(180deg);
+      }
+      .captcha-group input {
+        padding: 12px 15px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        width: 100%;
+        font-size: 14px;
+        outline: none;
+      }
+      .captcha-group input:focus {
+        border-color: var(--primary);
+        background-color: var(--white);
+        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+      }
+
       .btn-main {
         border-radius: 10px;
         border: none;
@@ -236,53 +264,29 @@
         font-weight: 600;
         padding: 12px;
         width: 100%;
-        letter-spacing: 1px;
-        transition:
-          transform 80ms ease-in,
-          background-color 0.3s;
         cursor: pointer;
-        margin-top: 10px;
-        box-shadow: 0 4px 6px rgba(78, 115, 223, 0.2);
+        margin-top: 5px;
+        transition: 0.3s;
       }
       .btn-main:hover {
         background-color: var(--primary-hover);
       }
-      .btn-main:active {
-        transform: scale(0.97);
-      }
-
       .btn-ghost {
         background-color: transparent;
         border: 2px solid var(--white);
         color: var(--white);
         border-radius: 25px;
-        font-size: 14px;
-        font-weight: 600;
         padding: 10px 35px;
         cursor: pointer;
-        transition: 0.3s;
         margin-top: 20px;
+        font-weight: 600;
+        transition: 0.3s;
         text-transform: uppercase;
       }
       .btn-ghost:hover {
         background-color: rgba(255, 255, 255, 0.15);
       }
 
-      /* Text cho phiên bản Mobile */
-      .mobile-switch {
-        display: none;
-        margin-top: 20px;
-        font-size: 14px;
-        color: var(--text-gray);
-      }
-      .mobile-switch a {
-        color: var(--primary);
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      /* LỚP PHỦ HÌNH ẢNH (Overlay) */
       .overlay-container {
         position: absolute;
         top: 0;
@@ -292,17 +296,14 @@
         overflow: hidden;
         transition: transform 0.6s ease-in-out;
         z-index: 100;
-        border-radius: 30px 0 0 30px; /* Bo góc mềm mại phần giao với form */
+        border-radius: 30px 0 0 30px;
       }
       .container.right-panel-active .overlay-container {
         transform: translateX(-100%);
         border-radius: 0 30px 30px 0;
       }
-
       .overlay {
-        /* Hình nền cao cấp */
-        background:
-          linear-gradient(
+        background: linear-gradient(
             135deg,
             rgba(78, 115, 223, 0.85) 0%,
             rgba(46, 89, 217, 0.85) 100%
@@ -321,7 +322,6 @@
       .container.right-panel-active .overlay {
         transform: translateX(50%);
       }
-
       .overlay-panel {
         position: absolute;
         display: flex;
@@ -333,26 +333,14 @@
         top: 0;
         height: 100%;
         width: 50%;
-        transform: translateX(0);
         transition: transform 0.6s ease-in-out;
       }
-      .overlay-panel h1 {
-        color: #fff;
-        font-size: 32px;
-        margin-bottom: 15px;
-      }
-      .overlay-panel p {
-        color: #e0e7ff;
-        font-size: 15px;
-      }
-
       .overlay-left {
         transform: translateX(-20%);
       }
       .container.right-panel-active .overlay-left {
         transform: translateX(0);
       }
-
       .overlay-right {
         right: 0;
         transform: translateX(0);
@@ -361,45 +349,20 @@
         transform: translateX(20%);
       }
 
-      /* MÀN HÌNH ĐÃ ĐĂNG NHẬP */
-      .logged-in-container {
-        text-align: center;
-        padding: 80px 40px;
-        width: 100%;
+      .mobile-switch {
+        display: none;
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--text-gray);
       }
-      .logged-in-container img {
-        width: 130px;
-        margin-bottom: 25px;
-        border-radius: 50%;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        border: 4px solid var(--white);
-      }
-      .logged-in-container h1 {
+      .mobile-switch a {
         color: var(--primary);
-        margin-bottom: 10px;
-        font-size: 30px;
+        font-weight: 600;
+        cursor: pointer;
       }
-      .btn-logout {
-        background-color: var(--error);
-        width: auto;
-        margin-top: 30px;
-        padding: 12px 30px;
-        border-radius: 30px;
-      }
-      .btn-logout:hover {
-        background-color: #dc2626;
-      }
-
-      /* Responsive Mobile */
       @media (max-width: 768px) {
-        body {
-          padding: 15px;
-        }
         .container {
-          min-height: 700px;
-        }
-        .form-wrapper {
-          padding: 0 25px;
+          min-height: 750px;
         }
         .sign-in-container,
         .sign-up-container {
@@ -412,7 +375,6 @@
         .mobile-switch {
           display: block;
         }
-
         .container.right-panel-active .sign-in-container {
           transform: none;
           opacity: 0;
@@ -427,11 +389,10 @@
         }
       }
 
-      /* TOAST NOTIFICATION */
-      #toast {
+      #thong_bao {
         position: fixed;
         top: 20px;
-        right: -300px;
+        right: -350px;
         padding: 16px 25px;
         border-radius: 10px;
         color: white;
@@ -444,7 +405,7 @@
         align-items: center;
         gap: 12px;
       }
-      #toast.show {
+      #thong_bao.show {
         right: 20px;
       }
       .toast-success {
@@ -453,49 +414,20 @@
       .toast-error {
         background-color: var(--error);
       }
-      #toast-icon {
-        font-size: 20px;
-      }
     </style>
   </head>
   <body>
-    <!-- Thông báo dạng Toast góc trên bên phải -->
-    <div id="toast"><i id="toast-icon"></i> <span id="toast-msg"></span></div>
+    <div id="thong_bao">
+      <i id="icon_thong_bao"></i> <span id="chu_thong_bao"></span>
+    </div>
 
-    <div class="container" id="container">
-      <!-- ================= MẶT TRÁI: FORM ĐĂNG KÝ ================= -->
+    <div class="container" id="khung_chinh">
       <div class="form-container sign-up-container">
         <div class="form-wrapper">
           <h1>Tạo Tài Khoản</h1>
+          <div class="divider"><span>nhập thông tin của bạn</span></div>
 
-          <!-- Khu vực đăng nhập Mạng Xã Hội -->
-          <div class="social-container" style="margin-top: 15px">
-            <!-- Mẫu Form gửi dữ liệu ảo từ FB -->
-            <form action="xulylogin.php" method="POST">
-              <input type="hidden" name="action" value="login_social" />
-              <input type="hidden" name="provider" value="Facebook" />
-              <input type="hidden" name="email" value="taikhoan_fb@gmail.com" />
-              <input type="hidden" name="name" value="Thành Viên Facebook" />
-              <button type="submit" class="social-btn fb">
-                <i class="fa-brands fa-facebook-f"></i> Facebook
-              </button>
-            </form>
-            <!-- Mẫu Form gửi dữ liệu ảo từ Google -->
-            <form action="xulylogin.php" method="POST">
-              <input type="hidden" name="action" value="login_social" />
-              <input type="hidden" name="provider" value="Google" />
-              <input type="hidden" name="email" value="taikhoan_gg@gmail.com" />
-              <input type="hidden" name="name" value="Thành Viên Google" />
-              <button type="submit" class="social-btn gg">
-                <i class="fa-brands fa-google"></i> Google
-              </button>
-            </form>
-          </div>
-
-          <div class="divider"><span>hoặc đăng ký bằng email</span></div>
-
-          <!-- Form Đăng ký thông thường -->
-          <form action="xulylogin.php" method="POST">
+          <form id="form_dang_ky" action="xulylogin.php" method="POST">
             <input type="hidden" name="action" value="register" />
 
             <div class="input-group">
@@ -524,8 +456,9 @@
               <i class="fa-solid fa-lock"></i>
               <input
                 type="password"
+                id="mat_khau"
                 name="password"
-                placeholder="Mật khẩu"
+                placeholder="Mật khẩu (ít nhất 6 ký tự)"
                 required
               />
             </div>
@@ -533,60 +466,48 @@
               <i class="fa-solid fa-shield-check"></i>
               <input
                 type="password"
+                id="nhap_lai_mat_khau"
                 name="re_password"
                 placeholder="Nhập lại mật khẩu"
                 required
               />
             </div>
+
+            <div class="captcha-group">
+              <div class="captcha-box">
+                <canvas id="ve_captcha_dk" width="140" height="46"></canvas>
+              </div>
+              <div
+                class="captcha-refresh"
+                onclick="taoMaXacNhan('DangKy')"
+                title="Đổi mã khác"
+              >
+                <i class="fa-solid fa-rotate-right"></i>
+              </div>
+              <input
+                type="text"
+                id="nhap_captcha_dk"
+                placeholder="Nhập đủ 3 ký tự"
+                required
+                autocomplete="off"
+              />
+            </div>
+
             <button type="submit" class="btn-main">Đăng Ký Thành Viên</button>
           </form>
 
-          <!-- Dành riêng cho Mobile -->
           <div class="mobile-switch">
-            Đã có tài khoản? <a id="mobile-signIn">Đăng Nhập</a>
+            Đã có tài khoản? <a id="mobile_chuyen_dang_nhap">Đăng Nhập</a>
           </div>
         </div>
       </div>
 
-      <!-- ================= MẶT PHẢI: FORM ĐĂNG NHẬP ================= -->
       <div class="form-container sign-in-container">
         <div class="form-wrapper">
           <h1>Đăng Nhập</h1>
+          <div class="divider"><span>vào hệ thống GTPT</span></div>
 
-          <!-- Khu vực đăng nhập Mạng Xã Hội -->
-          <div class="social-container" style="margin-top: 15px">
-            <form action="xulylogin.php" method="POST">
-              <input type="hidden" name="action" value="login_social" />
-              <input type="hidden" name="provider" value="Facebook" />
-              <input
-                type="hidden"
-                name="email"
-                value="khachhang_fb@gmail.com"
-              />
-              <input type="hidden" name="name" value="User Từ Facebook" />
-              <button type="submit" class="social-btn fb">
-                <i class="fa-brands fa-facebook-f"></i> Facebook
-              </button>
-            </form>
-            <form action="xulylogin.php" method="POST">
-              <input type="hidden" name="action" value="login_social" />
-              <input type="hidden" name="provider" value="Google" />
-              <input
-                type="hidden"
-                name="email"
-                value="khachhang_gg@gmail.com"
-              />
-              <input type="hidden" name="name" value="User Từ Google" />
-              <button type="submit" class="social-btn gg">
-                <i class="fa-brands fa-google"></i> Google
-              </button>
-            </form>
-          </div>
-
-          <div class="divider"><span>hoặc bằng tài khoản của bạn</span></div>
-
-          <!-- Form Đăng nhập thông thường -->
-          <form action="xulylogin.php" method="POST">
+          <form id="form_dang_nhap" action="xulylogin.php" method="POST">
             <input type="hidden" name="action" value="login" />
 
             <div class="input-group">
@@ -608,6 +529,26 @@
               />
             </div>
 
+            <div class="captcha-group">
+              <div class="captcha-box">
+                <canvas id="ve_captcha_dn" width="140" height="46"></canvas>
+              </div>
+              <div
+                class="captcha-refresh"
+                onclick="taoMaXacNhan('DangNhap')"
+                title="Đổi mã khác"
+              >
+                <i class="fa-solid fa-rotate-right"></i>
+              </div>
+              <input
+                type="text"
+                id="nhap_captcha_dn"
+                placeholder="Nhập đủ 3 ký tự"
+                required
+                autocomplete="off"
+              />
+            </div>
+
             <a
               href="#"
               style="
@@ -624,133 +565,204 @@
             <button type="submit" class="btn-main">Đăng Nhập</button>
           </form>
 
-          <!-- Dành riêng cho Mobile -->
           <div class="mobile-switch">
-            Chưa có tài khoản? <a id="mobile-signUp">Đăng Ký Ngay</a>
+            Chưa có tài khoản? <a id="mobile_chuyen_dang_ky">Đăng Ký Ngay</a>
           </div>
         </div>
       </div>
 
-      <!-- ================= LỚP PHỦ HÌNH ẢNH TRƯỢT MÀN HÌNH ================= -->
       <div class="overlay-container">
         <div class="overlay">
-          <!-- Chữ hiển thị khi ở tab Đăng Ký (Bên trái) -->
           <div class="overlay-panel overlay-left">
-            <h1>Chào bạn trở lại!</h1>
-            <p>
-              Để giữ kết nối với chúng tôi, vui lòng đăng nhập bằng thông tin cá
-              nhân của bạn
-            </p>
-            <button class="btn-ghost" id="signIn">Đăng Nhập</button>
+            <h1 style="color: white">Chào bạn trở lại!</h1>
+            <p style="color: white">Đăng nhập để quản lý phòng trọ của bạn.</p>
+            <button class="btn-ghost" id="nut_chuyen_dang_nhap">
+              Đăng Nhập
+            </button>
           </div>
-
-          <!-- Chữ hiển thị khi ở tab Đăng Nhập (Bên phải) -->
           <div class="overlay-panel overlay-right">
-            <h1>Xin chào, Bạn Mới!</h1>
-            <p>
-              Đăng ký thành viên ngay hôm nay để bắt đầu hành trình tìm kiếm
-              không gian sống lý tưởng cùng GTPT
+            <h1 style="color: white">Xin chào!</h1>
+            <p style="color: white">
+              Đăng ký để đăng tin và tìm kiếm phòng trọ dễ dàng.
             </p>
-            <button class="btn-ghost" id="signUp">Tạo Tài Khoản</button>
+            <button class="btn-ghost" id="nut_chuyen_dang_ky">
+              Tạo Tài Khoản
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SCRIPT XỬ LÝ GIAO DIỆN -->
     <script>
-      // JS điều khiển hiệu ứng trượt giữa Đăng Ký / Đăng Nhập
-      const signUpButton = document.getElementById("signUp");
-      const signInButton = document.getElementById("signIn");
-      const container = document.getElementById("container");
+      const khungChinh = document.getElementById("khung_chinh");
+      document
+        .getElementById("nut_chuyen_dang_ky")
+        .addEventListener("click", () =>
+          khungChinh.classList.add("right-panel-active")
+        );
+      document
+        .getElementById("nut_chuyen_dang_nhap")
+        .addEventListener("click", () =>
+          khungChinh.classList.remove("right-panel-active")
+        );
+      document
+        .getElementById("mobile_chuyen_dang_ky")
+        .addEventListener("click", () =>
+          khungChinh.classList.add("right-panel-active")
+        );
+      document
+        .getElementById("mobile_chuyen_dang_nhap")
+        .addEventListener("click", () =>
+          khungChinh.classList.remove("right-panel-active")
+        );
 
-      // JS Cho màn hình điện thoại
-      const mobileSignUp = document.getElementById("mobile-signUp");
-      const mobileSignIn = document.getElementById("mobile-signIn");
+      function hienThiThongBao(loiNhan, loaiThongBao) {
+        const hopThongBao = document.getElementById("thong_bao");
+        document.getElementById("chu_thong_bao").textContent = loiNhan;
+        hopThongBao.className = ""; // Reset class
 
-      // Bật lớp 'right-panel-active' -> Lớp phủ chạy sang trái
-      signUpButton.addEventListener("click", () => {
-        container.classList.add("right-panel-active");
-      });
-      mobileSignUp.addEventListener("click", () => {
-        container.classList.add("right-panel-active");
-      });
-
-      // Tắt lớp -> Trượt về như cũ
-      signInButton.addEventListener("click", () => {
-        container.classList.remove("right-panel-active");
-      });
-      mobileSignIn.addEventListener("click", () => {
-        container.classList.remove("right-panel-active");
-      });
-
-      // Hàm bật Popup thông báo (Toast Message)
-      function showToast(message, type) {
-        const toast = document.getElementById("toast");
-        const msgEl = document.getElementById("toast-msg");
-        const iconEl = document.getElementById("toast-icon");
-
-        msgEl.textContent = message;
-        toast.className = "";
-
-        if (type === "success") {
-          toast.classList.add("toast-success");
-          iconEl.className = "fa-solid fa-circle-check";
+        if (loaiThongBao === "success") {
+          hopThongBao.classList.add("toast-success");
+          document.getElementById("icon_thong_bao").className =
+            "fa-solid fa-circle-check";
         } else {
-          toast.classList.add("toast-error");
-          iconEl.className = "fa-solid fa-circle-exclamation";
+          hopThongBao.classList.add("toast-error");
+          document.getElementById("icon_thong_bao").className =
+            "fa-solid fa-circle-exclamation";
         }
 
-        toast.classList.add("show");
-        setTimeout(() => {
-          toast.classList.remove("show");
-        }, 4000);
+        hopThongBao.classList.add("show");
+        setTimeout(() => hopThongBao.classList.remove("show"), 3500); // Tự ẩn sau 3.5s
       }
 
-      // Logic xử lý khi tải trang (Đọc biến từ URL)
       window.onload = function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const msg = urlParams.get("msg");
-        const type = urlParams.get("type");
-        const user = urlParams.get("user");
-
-        // 1. Màn hình Chào Mừng nếu Đăng nhập thành công (Thường & Mạng Xã Hội)
-        if (user) {
-          container.innerHTML = `
-                    <div class="logged-in-container">
-                        <!-- Tạo Avatar tự động dựa theo Tên -->
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user)}&background=4e73df&color=fff&size=150" alt="Avatar">
-                        <h1>Tuyệt Vời, ${decodeURIComponent(user)}!</h1>
-                        <p style="font-size: 16px; margin-bottom: 25px; color: var(--text-gray);">Bạn đã đăng nhập thành công vào hệ thống GTPT.</p>
-                        <form action="xulylogin.php" method="POST">
-                            <input type="hidden" name="action" value="logout">
-                            <button type="submit" class="btn-main btn-logout">
-                                <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất An Toàn
-                            </button>
-                        </form>
-                    </div>
-                `;
+        const thamSoURL = new URLSearchParams(window.location.search);
+        if (thamSoURL.get("msg")) {
+          hienThiThongBao(
+            decodeURIComponent(thamSoURL.get("msg")),
+            thamSoURL.get("type")
+          );
+          if (thamSoURL.get("type") === "success")
+            khungChinh.classList.remove("right-panel-active");
         }
+        window.history.replaceState(null, "", window.location.pathname); // Xóa URL cho sạch đẹp
 
-        // 2. Hiển thị thông báo (Báo lỗi hoặc Đăng ký thành công)
-        if (msg) {
-          showToast(decodeURIComponent(msg), type);
-          // Đăng ký thành công -> Gạt ảnh về bên phải (form đăng nhập)
-          if (type === "success" && !user) {
-            container.classList.remove("right-panel-active");
-          }
-        }
-
-        // 3. Xoá tham số URL rườm rà (Clean URL)
-        if (window.history.replaceState) {
-          const cleanURL =
-            window.location.protocol +
-            "//" +
-            window.location.host +
-            window.location.pathname;
-          window.history.replaceState({ path: cleanURL }, "", cleanURL);
-        }
+        taoMaXacNhan("DangKy");
+        taoMaXacNhan("DangNhap");
       };
+
+      let maLuuTruDangKy = "";
+      let maLuuTruDangNhap = "";
+
+      // Hàm vẽ chữ ngẫu nhiên lên vùng Canvas
+      function taoMaXacNhan(loaiForm) {
+        const theCanvas = document.getElementById(
+          "ve_captcha_" + (loaiForm === "DangKy" ? "dk" : "dn")
+        );
+        const butVe = theCanvas.getContext("2d");
+        butVe.clearRect(0, 0, theCanvas.width, theCanvas.height);
+
+        // Đã xóa bỏ các ký tự dễ nhầm lẫn: 0, O, o, 1, l, L, I, i
+        const danhSachKyTu =
+          "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
+        let chuoiNgauNhien = "";
+
+        // CÓ 3 KÝ TỰ
+        for (let i = 0; i < 3; i++) {
+          chuoiNgauNhien +=
+            danhSachKyTu[Math.floor(Math.random() * danhSachKyTu.length)];
+        }
+
+        // Lưu lại mã để tí check xem user nhập đúng không
+        if (loaiForm === "DangKy") maLuuTruDangKy = chuoiNgauNhien;
+        else maLuuTruDangNhap = chuoiNgauNhien;
+
+        // Bắt đầu vẽ chữ lên Canvas (Đã phóng to và căng lề chuẩn)
+        butVe.font = "bold 28px Courier New";
+        butVe.fillStyle = "#2e59d9";
+        butVe.textBaseline = "middle";
+        butVe.textAlign = "center"; // Đảm bảo chữ nằm cân chính giữa tọa độ X
+
+        // Làm rối: Xoay nghiêng từng chữ
+        for (let i = 0; i < chuoiNgauNhien.length; i++) {
+          // ĐÃ FIX LỖI: Chia đều khung 140px, bắt đầu xa hơn (x = 30), cách nhau 40px
+          butVe.setTransform(
+            1,
+            Math.random() * 0.2 - 0.1,
+            Math.random() * 0.2 - 0.1,
+            1,
+            30 + i * 40,
+            23
+          );
+          butVe.fillText(chuoiNgauNhien[i], 0, 0);
+        }
+        butVe.setTransform(1, 0, 0, 1, 0, 0); // Reset lại khung vẽ
+
+        // Thêm 3 đường kẻ ngang dọc rối mắt (nhưng làm màu mờ nhạt đi để không che chữ)
+        for (let i = 0; i < 3; i++) {
+          butVe.beginPath();
+          butVe.moveTo(
+            Math.random() * theCanvas.width,
+            Math.random() * theCanvas.height
+          );
+          butVe.lineTo(
+            Math.random() * theCanvas.width,
+            Math.random() * theCanvas.height
+          );
+          butVe.strokeStyle = "#cbd5e1"; // Màu xám nhạt
+          butVe.stroke();
+        }
+      }
+
+      // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG KÝ
+      document
+        .getElementById("form_dang_ky")
+        .addEventListener("submit", function (suKien) {
+          const matKhau = document.getElementById("mat_khau").value;
+          const nhapLaiMatKhau =
+            document.getElementById("nhap_lai_mat_khau").value;
+          const maNguoiDungNhap =
+            document.getElementById("nhap_captcha_dk").value;
+
+          // Check độ dài mật khẩu
+          if (matKhau.length < 6) {
+            suKien.preventDefault(); // Lệnh này giúp chặn Form không cho gửi dữ liệu đi
+            hienThiThongBao("Mật khẩu phải chứa ít nhất 6 ký tự!", "error");
+            return;
+          }
+          // Check khớp mật khẩu
+          if (matKhau !== nhapLaiMatKhau) {
+            suKien.preventDefault();
+            hienThiThongBao("Mật khẩu nhập lại không khớp!", "error");
+            return;
+          }
+          // Check mã Captcha
+          if (maNguoiDungNhap.toLowerCase() !== maLuuTruDangKy.toLowerCase()) {
+            suKien.preventDefault();
+            hienThiThongBao("Mã Captcha không chính xác!", "error");
+            taoMaXacNhan("DangKy"); // Gõ sai thì cho đổi mã mới luôn
+            document.getElementById("nhap_captcha_dk").value = ""; // Xóa trắng ô nhập
+            return;
+          }
+        });
+
+      // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG NHẬP
+      document
+        .getElementById("form_dang_nhap")
+        .addEventListener("submit", function (suKien) {
+          const maNguoiDungNhap =
+            document.getElementById("nhap_captcha_dn").value;
+
+          if (
+            maNguoiDungNhap.toLowerCase() !== maLuuTruDangNhap.toLowerCase()
+          ) {
+            suKien.preventDefault();
+            hienThiThongBao("Mã Captcha không chính xác!", "error");
+            taoMaXacNhan("DangNhap");
+            document.getElementById("nhap_captcha_dn").value = "";
+            return;
+          }
+        });
     </script>
   </body>
 </html>
