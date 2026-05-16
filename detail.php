@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <?php
-include('ketnoi.php');
+include('include/ketnoi.php');
 
 if(isset($_GET['id'])){
 $id = $_GET['id'];
@@ -46,7 +46,7 @@ else{
     header('Location: index.php');
     exit;
 }
-include("menu.php");
+include("include/menu.php");
 ?>
 
 <div class="container py-4">
@@ -57,7 +57,7 @@ include("menu.php");
             <div class="info-card">
                 <div class="row g-2">
                     <div class="col-12">
-                            <img src="<?php echo 'images/' .  $row["images"];?>" class="gallery-img w-100 rounded-3" alt="<?php echo $row["title"]; ?>" id="mainImage">
+                            <img src="<?php echo 'assets/images/' .  $row["images"];?>" class="gallery-img w-100 rounded-3" alt="<?php echo $row["title"]; ?>" id="mainImage">
                     </div>                    
                 </div>
             </div>
