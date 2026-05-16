@@ -182,10 +182,11 @@ include("include/menu.php");
     </div>
     <?php endif; ?>
 </div>
-<?php
+<?php include("include/footer.php");
 // Đóng kết nối
 $conn->close();
 ?>
+
 <!-- Bootstrap 5 Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
