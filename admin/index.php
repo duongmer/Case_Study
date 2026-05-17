@@ -2,9 +2,6 @@
 include 'config.php';
 checkAdmin();
 
-$pageTitle  = 'Bảng điều khiển';
-$currentPage = 'dashboard';
-
 // Thống kê
 $totalMotel    = $conn->query("SELECT COUNT(*) c FROM motel")->fetch_assoc()['c'];
 $approvedMotel = $conn->query("SELECT COUNT(*) c FROM motel WHERE approve=1")->fetch_assoc()['c'];

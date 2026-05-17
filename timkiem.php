@@ -1,5 +1,5 @@
 <?php
-include('ketnoi.php');
+include('include/ketnoi.php');
 
 // =============================================
 // XỬ LÝ THAM SỐ TÌM KIẾM TỪ URL
@@ -293,7 +293,7 @@ function buildUrl($extra = []) {
 </head>
 <body>
 
-<?php include('menu.php'); ?>
+<?php include('include/menu.php'); ?>
 
 <!-- Search Hero -->
 <div class="search-hero">
@@ -486,7 +486,7 @@ function buildUrl($extra = []) {
         <div class="row g-4">
           <?php while ($row = $result->fetch_object()):
             $images = !empty($row->images) ? explode(',', $row->images) : [];
-            $img = !empty($images) ? 'images/' . $images[0] : 'https://picsum.photos/seed/'.$row->ID.'/600/400';
+            $img = !empty($images) ? 'assets/images/' . $images[0] : 'https://picsum.photos/seed/'.$row->ID.'/600/400';
             $utils = !empty($row->utilities) ? explode(',', $row->utilities) : [];
           ?>
           <div class="col-md-6 col-xl-4">
@@ -560,7 +560,7 @@ function buildUrl($extra = []) {
   </div>
 </div>
 
-<?php include('footer.php'); ?>
+<?php include('include/footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

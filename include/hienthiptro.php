@@ -83,7 +83,7 @@
           <div class="col-md-6 col-lg-4">
             <div class="listing-card h-100 d-flex flex-column bg-white rounded-4 shadow-sm border-0 overflow-hidden">
               <div class="position-relative">
-                <img src="<?php echo 'images/' . $row['images']; ?>" class="listing-img w-100" style="height: 220px; object-fit: cover;" alt="<?php echo $row['title']; ?>" onerror="this.src='https://picsum.photos/600/400'">
+                <img src="<?php echo 'assets/images/' . $row['images']; ?>" class="listing-img w-100" style="height: 220px; object-fit: cover;" alt="<?php echo $row['title']; ?>" onerror="this.src='https://picsum.photos/600/400'">
                 <span class="listing-badge position-absolute top-0 start-0 m-3 px-3 py-1 bg-white rounded-pill shadow-sm fw-bold" style="font-size: 0.8rem;">
                   <?php 
                     if($row['category_id'] == 1) echo '<i class="bi bi-house-door-fill text-warning me-1"></i>Phòng trọ';

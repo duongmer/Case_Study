@@ -1,33 +1,35 @@
 <?php
-require_once 'config.php';
+include 'config.php';
 checkAdmin();
-
-$pageTitle   = 'Thêm tài khoản';
-$currentPage = 'user_add';
 $error = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name     = $conn->real_escape_string(trim($_POST['name']));
-    $username = $conn->real_escape_string(trim($_POST['username']));
-    $email    = $conn->real_escape_string(trim($_POST['email']));
-    $password = $conn->real_escape_string(trim($_POST['password']));
-    $phone    = $conn->real_escape_string(trim($_POST['phone']));
+if (isset($_POST["btnsave"])) {
+    $name     = $_POST['name'];
+    $username = $_POST['username'];
+    $email    = $_POST['email'];
+    $password = $_POST['password'];
+    $phone    = $_POST['phone'];
     $role     = (int)$_POST['role'];
 
-    // Kiểm tra trùng username
-    $check = $conn->query("SELECT ID FROM user WHERE Username='$username'");
+    $sql_check = "SELECT Username, Email, Phone FROM user WHERE Username='$username' OR Email='$email' OR Phone='$phone'";
+    $check = $conn->query($sql_check);
     if ($check->num_rows > 0) {
-        $error = 'Username đã tồn tại!';
+        $row = $check->fetch_assoc();
+        if ($row['Username'] == $username) {
+            $error = 'Username đã tồn tại!';
+        } elseif ($row['Email'] == $email) {
+            $error = 'Email đã tồn tại trong hệ thống!';
+        } elseif ($row['Phone'] == $phone) {
+            $error = 'Số điện thoại này đã được sử dụng!';
+        }
     } else {
-        $conn->query("INSERT INTO user (Name,Username,Email,Password,Role,Phone,Avatar)
-            VALUES ('$name','$username','$email','$password',$role,'$phone','default.jpg')");
-        header('Location: user.php?ok=added'); exit;
+        $sql = "INSERT INTO user (Name, Username, Email, Password, Role, Phone, Avatar) VALUES ('$name', '$username', '$email', '$password', $role, '$phone', 'default.jpg')";
+        $conn->query($sql);
+        header('Location: user.php');
+        exit;
     }
 }
-
 include 'layout_top.php';
 ?>
-
 <div class="app-title">
   <ul class="app-breadcrumb breadcrumb">
     <li class="breadcrumb-item"><a href="user.php">Quản lý người dùng</a></li>
@@ -41,9 +43,9 @@ include 'layout_top.php';
     <div class="tile">
       <h3 class="tile-title">👤 Tạo tài khoản mới</h3>
       <div class="tile-body">
-        <?php if ($error): ?>
-        <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?= $error ?></div>
-        <?php endif; ?>
+        <?php if (!empty($error)) { ?>
+          <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?php echo $error; ?></div>
+        <?php } ?>
         <form class="row" method="POST">
           <div class="form-group col-md-6">
             <label class="control-label">Họ và tên</label>
@@ -73,7 +75,7 @@ include 'layout_top.php';
             </select>
           </div>
           <div class="col-md-12" style="margin-top:10px;">
-            <button class="btn btn-save" type="submit">💾 Lưu lại</button>
+            <button class="btn btn-save" type="submit" name="btnsave">💾 Lưu lại</button>
             <a class="btn btn-cancel" href="user.php">Hủy bỏ</a>
           </div>
         </form>

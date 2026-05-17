@@ -2,57 +2,70 @@
 include 'config.php';
 checkAdmin();
 
-$pageTitle   = 'Quản lý người dùng';
-$currentPage = 'user';
-$msg = '';
-
-// ── Xóa tài khoản ──────────────────────────────────────────────
+// sửa
+$error_edit = '';
+if (isset($_POST["btn-sua"])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $role = (int)$_POST['role'];
+   
+    $sql_check = "SELECT Username, Email, Phone FROM user WHERE (Username='$username' OR Email='$email' OR Phone='$phone') AND ID!=$id";
+    $check = $conn->query($sql_check);
+    if ($check->num_rows > 0) {
+        $row = $check->fetch_assoc();
+        if ($row['Username'] == $username) {
+            $error_edit = 'Username đã tồn tại!';
+        } elseif ($row['Email'] == $email) {
+            $error_edit = 'Email đã tồn tại trong hệ thống!';
+        } elseif ($row['Phone'] == $phone) {
+            $error_edit = 'Số điện thoại này đã được sử dụng!';
+        }
+    } else {
+        $sql = "UPDATE user SET Name='$name', Username='$username', Email='$email', Phone='$phone', Role=$role WHERE ID=$id";
+        $conn->query($sql);
+        header('Location: user.php');
+        exit();
+    }
+}
+//đổi mk
+if (isset($_POST['doimk'])) {
+    $id = $_POST['id'];
+    $newpw = ($_POST['newpw']);
+    $cfpw = ($_POST['confirmpw']);
+    if ($newpw === $cfpw) {
+        $sql_mk = "UPDATE user SET Password='$newpw' WHERE ID=$id";
+        $conn->query($sql_mk);
+    }
+    header('Location: user.php');
+    exit();
+}
+//xóa
 if (isset($_GET['delete'])) {
-    $id = (int)$_GET['delete'];
+    $id = $_GET['delete'];
     if ($id != $_SESSION['user_id']) {
-        $conn->query("DELETE FROM user WHERE ID=$id");
+      $sql_xoa = "DELETE FROM user WHERE ID=$id";
+      $conn->query($sql_xoa);
     }
-    header('Location: user.php?ok=delete'); exit;
+    header('Location: user.php');
+    exit();
+}
+// tìm kiếm
+$tim = '';
+if (isset($_GET['tim'])) {
+    $tim = $_GET['tim'];
+}
+$sql = "SELECT * FROM user";
+
+if (!empty($tim)) {
+    $sql .= " WHERE Name LIKE '%$tim%' OR Username LIKE '%$tim%' OR Email LIKE '%$tim%' OR Phone LIKE '%$tim%'";
 }
 
-// ── Sửa thông tin ──────────────────────────────────────────────
-if (isset($_POST['action']) && $_POST['action'] == 'edit') {
-    $id       = (int)$_POST['id'];
-    $name     = $conn->real_escape_string(trim($_POST['name']));
-    $username = $conn->real_escape_string(trim($_POST['username']));
-    $email    = $conn->real_escape_string(trim($_POST['email']));
-    $phone    = $conn->real_escape_string(trim($_POST['phone']));
-    $role     = (int)$_POST['role'];
-    $conn->query("UPDATE user SET Name='$name', Username='$username', Email='$email', Phone='$phone', Role=$role WHERE ID=$id");
-    header('Location: user.php?ok=saved'); exit;
-}
+$sql .= " ORDER BY ID";
+$result = $conn->query($sql);
 
-// ── Đổi mật khẩu ───────────────────────────────────────────────
-if (isset($_POST['action']) && $_POST['action'] == 'changepw') {
-    $id    = (int)$_POST['id'];
-    $newpw = trim($_POST['newpw']);
-    $cfpw  = trim($_POST['confirmpw']);
-    if ($newpw === $cfpw && strlen($newpw) >= 4) {
-        $pw = $conn->real_escape_string($newpw);
-        $conn->query("UPDATE user SET Password='$pw' WHERE ID=$id");
-    }
-    header('Location: user.php?ok=saved'); exit;
-}
-
-// ── Thông báo ───────────────────────────────────────────────────
-$msgs = ['delete' => 'Đã xóa tài khoản!', 'saved' => 'Lưu thành công!', 'added' => 'Thêm tài khoản thành công!'];
-$alertScript = isset($_GET['ok']) ? "swal('Thành công!','" . ($msgs[$_GET['ok']] ?? '') . "','success');" : '';
-
-// ── Tìm kiếm ────────────────────────────────────────────────────
-$keyword = trim($_GET['keyword'] ?? '');
-$where   = '1=1';
-if ($keyword) {
-    $kw    = $conn->real_escape_string($keyword);
-    $where .= " AND (Name LIKE '%$kw%' OR Username LIKE '%$kw%' OR Email LIKE '%$kw%')";
-}
-$users = $conn->query("SELECT * FROM user WHERE $where ORDER BY ID");
-
-$extraHead = '<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">';
 include 'layout_top.php';
 ?>
 
@@ -62,17 +75,10 @@ include 'layout_top.php';
   </ul>
   <div id="clock"></div>
 </div>
-
-<?php if ($alertScript): ?>
-<script>$(document).ready(function(){ <?= $alertScript ?> });</script>
-<?php endif; ?>
-
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
       <div class="tile-body">
-
-        <!-- Nút chức năng -->
         <div class="row element-button" style="margin-bottom:16px;">
           <div class="col-sm-2">
             <a class="btn btn-add btn-sm" href="user_add.php">
@@ -85,16 +91,14 @@ include 'layout_top.php';
             </a>
           </div>
         </div>
-
         <!-- Tìm kiếm -->
         <form method="GET" class="row" style="margin-bottom:16px; background:#f8f9fa; padding:14px; border-radius:6px;">
           <div class="col-md-6">
-            <input type="text" name="keyword" class="form-control form-control-sm"
-                   placeholder="🔍 Tìm theo tên, username, email..." value="<?= htmlspecialchars($keyword) ?>">
+            <input type="text" name="tim" class="form-control form-control-sm"
+                   placeholder="🔍 Tìm theo tên, username, email, sdt" value="<?php echo $tim;?>">
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-add btn-sm"><i class="fas fa-search"></i> Tìm</button>
-            <a href="user.php" class="btn btn-delete btn-sm">Reset</a>
           </div>
         </form>
 
@@ -102,7 +106,7 @@ include 'layout_top.php';
         <table class="table table-hover table-bordered" id="userTable">
           <thead>
             <tr>
-              <th>ID</th>
+              <th width="20px">ID</th>
               <th>Họ tên</th>
               <th>Username</th>
               <th>Email</th>
@@ -112,42 +116,42 @@ include 'layout_top.php';
             </tr>
           </thead>
           <tbody>
-            <?php while ($u = $users->fetch_assoc()): ?>
+            <?php foreach ($result as $row) {?>
             <tr>
-              <td>#<?= $u['ID'] ?></td>
-              <td><?= htmlspecialchars($u['Name']) ?></td>
-              <td><?= htmlspecialchars($u['Username']) ?></td>
-              <td><?= htmlspecialchars($u['Email']) ?></td>
-              <td><?= $u['Phone'] ?></td>
+              <td><?php echo $row['ID']; ?></td>
+              <td><?php echo $row['Name']; ?></td>
+              <td><?php echo $row['Username']; ?></td>
+              <td><?php echo $row['Email']; ?></td>
+              <td><?php echo $row['Phone']; ?></td>
               <td>
-                <?php if ($u['Role'] == 1): ?>
+                <?php if ($row['Role'] == 1) { ?>
                   <span class="badge bg-danger">Admin</span>
-                <?php else: ?>
+                <?php } else { ?>
                   <span class="badge bg-info">Người dùng</span>
-                <?php endif; ?>
+                <?php } ?>
               </td>
               <td class="table-td-center">
                 <!-- Nút Sửa -->
                 <button class="btn btn-primary btn-sm" title="Sửa thông tin"
-                  onclick="openEdit(<?= $u['ID'] ?>,'<?= addslashes($u['Name']) ?>','<?= addslashes($u['Username']) ?>','<?= addslashes($u['Email']) ?>','<?= $u['Phone'] ?>',<?= $u['Role'] ?>)"
+                  onclick="openEdit(<?php echo $row['ID']; ?>,'<?php echo ($row['Name']); ?>','<?php echo ($row['Username']); ?>','<?php echo ($row['Email']); ?>','<?php echo $row['Phone']; ?>',<?php echo $row['Role']; ?>)"
                   data-toggle="modal" data-target="#ModalEdit">
                   <i class="fas fa-edit"></i>
                 </button>
                 <!-- Nút Đổi mật khẩu -->
                 <button class="btn btn-primary btn-sm" title="Đổi mật khẩu"
-                  onclick="document.getElementById('pw_id').value=<?= $u['ID'] ?>"
+                  onclick="document.getElementById('pw_id').value=<?php echo $row['ID'];?>"
                   data-toggle="modal" data-target="#ModalPW">
                   <i class="fas fa-key"></i>
                 </button>
                 <!-- Nút Xóa (không tự xóa mình) -->
-                <?php if ($u['ID'] != $_SESSION['user_id']): ?>
-                <button class="btn btn-primary btn-sm trash" title="Xóa" data-id="<?= $u['ID'] ?>">
+                <?php if ($row['ID'] != $_SESSION['user_id']) { ?>
+                <button class="btn btn-primary btn-sm trash" title="Xóa" data-id="<?= $row['ID'] ?>">
                   <i class="fas fa-trash-alt"></i>
                 </button>
-                <?php endif; ?>
+                <?php } ?>
               </td>
             </tr>
-            <?php endwhile; ?>
+            <?php } ?>
           </tbody>
         </table>
 
@@ -162,6 +166,9 @@ include 'layout_top.php';
     <div class="modal-content">
       <div class="modal-body">
         <h5>✏️ Chỉnh sửa thông tin tài khoản</h5><hr>
+        <?php if (!empty($error_edit)) { ?>
+          <div id = "loi_sua" class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?php echo $error_edit; ?></div>
+        <?php } ?>
         <form method="POST">
           <input type="hidden" name="action" value="edit">
           <input type="hidden" name="id" id="edit_id">
@@ -190,7 +197,7 @@ include 'layout_top.php';
               </select>
             </div>
           </div>
-          <button class="btn btn-save" type="submit">Lưu lại</button>
+          <button class="btn btn-save" type="submit" name="btn-sua">Lưu lại</button>
           <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
         </form>
       </div>
@@ -215,22 +222,42 @@ include 'layout_top.php';
             <label>Xác nhận mật khẩu</label>
             <input class="form-control" type="password" name="confirmpw" placeholder="Nhập lại..." required>
           </div>
-          <button class="btn btn-save" type="submit">Đổi mật khẩu</button>
+          <button class="btn btn-save" type="submit" name="doimk">Đổi mật khẩu</button>
           <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
         </form>
       </div>
     </div>
   </div>
 </div>
+<?php if (!empty($error_edit)) { ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // 1. Hàm này chạy sẽ điền lại dữ liệu, nhưng vô tình giấu luôn khung lỗi
+        openEdit(
+            <?php echo $_POST['id']; ?>,
+            '<?php echo ($_POST['name']); ?>',
+            '<?php echo ($_POST['username']); ?>',
+            '<?php echo ($_POST['email']); ?>',
+            '<?php echo ($_POST['phone']); ?>',
+            <?php echo (int)$_POST['role']; ?>
+        );
 
+        // 2. THÊM DÒNG NÀY VÀO ĐÂY: Ép khung lỗi hiển thị trở lại!
+        document.getElementById('loi_sua').style.display = 'block';
+
+        // 3. Tự động bật Modal Sửa lên
+        $('#ModalEdit').modal('show');
+    });
+</script>
+<?php } ?>
 <?php
 $extraScript = "
 <script src='https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js'></script>
 <script>
 $(document).ready(function(){
-    // Khởi tạo DataTable tiếng Việt
-    $('#userTable').DataTable({ language:{ url:'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
+    $('#userTable').DataTable({ searching: false, language:{ url:'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
 
     // Xác nhận trước khi xóa
     $('.trash').click(function(){
@@ -248,6 +275,11 @@ function openEdit(id, name, username, email, phone, role) {
     document.getElementById('edit_email').value    = email;
     document.getElementById('edit_phone').value    = phone;
     document.getElementById('edit_role').value     = role;
+    // THÊM ĐOẠN NÀY VÀO: Tìm và giấu khung báo lỗi đi
+    var khungLoi = document.getElementById('loi_sua');
+    if (khungLoi) {
+        khungLoi.style.display = 'none'; // Ẩn nó đi
+    }
 }
 </script>";
 include 'layout_bottom.php';
