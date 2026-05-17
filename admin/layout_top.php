@@ -57,7 +57,7 @@
       </a>
     </li>
     <li>
-      <a class="app-menu__item" href="report.php">
+      <a class="app-menu__item" href="thongke.php">
         <i class='app-menu__icon bx bx-pie-chart-alt-2'></i>
         <span class="app-menu__label">Báo cáo thống kê</span>
       </a>

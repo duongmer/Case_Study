@@ -1,9 +1,6 @@
 <?php
-require_once 'config.php';
+include 'config.php';
 checkAdmin();
-
-$pageTitle   = 'Báo cáo thống kê';
-$currentPage = 'report';
 
 // Tổng quan
 $totalMotel    = $conn->query("SELECT COUNT(*) c FROM motel")->fetch_assoc()['c'];
@@ -52,9 +49,6 @@ $filteredMotels = $conn->query("SELECT m.*, u.Name owner, d.Name district
 $thisMonthCount = $conn->query("SELECT COUNT(*) c FROM motel WHERE MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())")->fetch_assoc()['c'];
 
 $users = $conn->query("SELECT ID, Name FROM user ORDER BY Name");
-
-$extraHead = '<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
-<script type="text/javascript" src="js/plugins/chart.js"></script>';
 include 'layout_top.php';
 ?>
 
@@ -72,7 +66,7 @@ include 'layout_top.php';
       <i class='icon bx bxs-chart fa-3x'></i>
       <div class="info">
         <h4>Tổng thu nhập (ước tính)</h4>
-        <p><b><?= number_format($avgPrice) ?> đ/tháng TB</b></p>
+        <p><b><?=($avgPrice) ?> đ/tháng TB</b></p>
       </div>
     </div>
   </div>
@@ -99,40 +93,11 @@ include 'layout_top.php';
       <i class='icon bx bx-show fa-3x'></i>
       <div class="info">
         <h4>Tổng lượt xem</h4>
-        <p><b><?= number_format($totalViews) ?> lượt</b></p>
+        <p><b><?=($totalViews) ?> lượt</b></p>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Biểu đồ & Top quận -->
-<div class="row">
-  <div class="col-md-8">
-    <div class="tile">
-      <h3 class="tile-title">📊 Số tin đăng theo tháng</h3>
-      <div class="embed-responsive embed-responsive-16by9">
-        <canvas class="embed-responsive-item" id="lineChart"></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="tile">
-      <h3 class="tile-title">🏆 Top quận/phường</h3>
-      <table class="table table-bordered">
-        <thead><tr><th>Quận/Phường</th><th>Số phòng</th></tr></thead>
-        <tbody>
-          <?php while ($td = $topDistricts->fetch_assoc()): ?>
-          <tr>
-            <td><?= htmlspecialchars($td['Name']) ?></td>
-            <td><span class="badge bg-primary"><?= $td['cnt'] ?></span></td>
-          </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <!-- Bộ lọc tìm kiếm -->
 <div class="row">
   <div class="col-md-12">
@@ -145,7 +110,7 @@ include 'layout_top.php';
             <select class="form-control form-control-sm" name="user_id">
               <option value="">-- Tất cả --</option>
               <?php while ($u = $users->fetch_assoc()): ?>
-              <option value="<?= $u['ID'] ?>" <?= $searchUser==$u['ID']?'selected':'' ?>><?= htmlspecialchars($u['Name']) ?></option>
+              <option value="<?= $u['ID'] ?>" <?= $searchUser==$u['ID']?'selected':'' ?>><?= ($u['Name']) ?></option>
               <?php endwhile; ?>
             </select>
           </div>
@@ -171,7 +136,6 @@ include 'layout_top.php';
             <button type="submit" class="btn btn-add btn-sm w-100">Lọc</button>
           </div>
           <div class="col-md-12" style="margin-top:4px;">
-            <a href="report.php" class="btn btn-delete btn-sm">Reset bộ lọc</a>
             <span class="ml-3" style="color:#e67e22; font-weight:600;">
               Kết quả: <?= $filteredMotels->num_rows ?> tin đăng
             </span>
@@ -195,11 +159,11 @@ include 'layout_top.php';
           <tbody>
             <?php while ($row = $filteredMotels->fetch_assoc()): ?>
             <tr>
-              <td>#<?= $row['ID'] ?></td>
-              <td><?= htmlspecialchars($row['title']) ?></td>
-              <td><?= number_format($row['price']) ?> đ</td>
-              <td><?= htmlspecialchars($row['district']) ?></td>
-              <td><?= htmlspecialchars($row['owner']) ?></td>
+              <td><?= $row['ID'] ?></td>
+              <td><?= ($row['title']) ?></td>
+              <td><?= ($row['price']) ?> đ</td>
+              <td><?= ($row['district']) ?></td>
+              <td><?= ($row['owner']) ?></td>
               <td><?= $row['count_view'] ?></td>
               <td>
                 <?php if ($row['approve'] == 1): ?>
@@ -217,6 +181,35 @@ include 'layout_top.php';
     </div>
   </div>
 </div>
+<!-- Biểu đồ & Top quận -->
+<div class="row">
+  <div class="col-md-8">
+    <div class="tile">
+      <h3 class="tile-title">📊 Số tin đăng theo tháng</h3>
+      <div class="embed-responsive embed-responsive-16by9">
+        <canvas class="embed-responsive-item" id="lineChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="tile">
+      <h3 class="tile-title">🏆 Top quận/phường</h3>
+      <table class="table table-bordered">
+        <thead><tr><th>Quận/Phường</th><th>Số phòng</th></tr></thead>
+        <tbody>
+          <?php while ($td = $topDistricts->fetch_assoc()): ?>
+          <tr>
+            <td><?=($td['Name']) ?></td>
+            <td><span class="badge bg-primary"><?= $td['cnt'] ?></span></td>
+          </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
 
 <?php
 $labelsJson = json_encode($monthLabels);
@@ -226,7 +219,7 @@ $extraScript = "
 <script src='https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js'></script>
 <script>
 $(document).ready(function(){
-    $('#reportTable').DataTable({ language:{ url:'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
+    $('#reportTable').DataTable({searching: false, language:{ url:'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
 });
 var ctx = document.getElementById('lineChart').getContext('2d');
 new Chart(ctx, {

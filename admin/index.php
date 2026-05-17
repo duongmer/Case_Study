@@ -8,23 +8,11 @@ $approvedMotel = $conn->query("SELECT COUNT(*) c FROM motel WHERE approve=1")->f
 $pendingMotel  = $conn->query("SELECT COUNT(*) c FROM motel WHERE approve=0")->fetch_assoc()['c'];
 $totalUser     = $conn->query("SELECT COUNT(*) c FROM user")->fetch_assoc()['c'];
 
-// Thống kê theo tháng (6 tháng gần nhất)
-$monthLabels = $monthData = [];
-for ($i = 5; $i >= 0; $i--) {
-    $m = date('m', strtotime("-$i month"));
-    $y = date('Y', strtotime("-$i month"));
-    $label = 'T' . (int)$m;
-    $count = $conn->query("SELECT COUNT(*) c FROM motel WHERE MONTH(created_at)=$m AND YEAR(created_at)=$y")->fetch_assoc()['c'];
-    $monthLabels[] = $label;
-    $monthData[]   = (int)$count;
-}
-
 // Tin đăng mới nhất
 $recent = $conn->query("SELECT m.*, u.Name owner, d.Name district 
     FROM motel m JOIN user u ON m.user_id=u.ID JOIN districts d ON m.district_id=d.ID 
     ORDER BY m.created_at DESC LIMIT 6");
 
-$extraHead = '<script type="text/javascript" src="js/plugins/chart.js"></script>';
 include 'layout_top.php';
 ?>
 <div class="row">
@@ -81,7 +69,7 @@ include 'layout_top.php';
 </div>
 
 <div class="row">
-  <!-- Biểu đồ -->
+  <!-- Biểu đồ cột -->
   <div class="col-md-12 col-lg-6">
     <div class="tile">
       <h3 class="tile-title">Tin đăng 6 tháng gần nhất</h3>
@@ -90,6 +78,7 @@ include 'layout_top.php';
       </div>
     </div>
   </div>
+  <!-- Biểu đồ tròn -->
   <div class="col-md-12 col-lg-6">
     <div class="tile">
       <h3 class="tile-title">Tỉ lệ duyệt / chờ duyệt</h3>
@@ -145,41 +134,38 @@ include 'layout_top.php';
   </div>
 </div>
 
-<?php
-$labelsJson = json_encode($monthLabels);
-$dataJson   = json_encode($monthData);
-$extraScript = "
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-var ctxBar = document.getElementById('barChart').getContext('2d');
-new Chart(ctxBar, {
-    type: 'bar',
-    data: {
-        labels: $labelsJson,
-        datasets: [{
-            label: 'Số tin đăng',
-            data: $dataJson,
-            backgroundColor: 'rgba(230,126,34,0.7)',
-            borderColor: '#e67e22',
-            borderWidth: 1
-        }]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
-});
+document.addEventListener('DOMContentLoaded', function() {
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: ['T12', 'T1', 'T2', 'T3', 'T4', 'T5'],
+            datasets: [{
+                label: 'Số tin đăng',
+                data: [18, 24, 20, 31, 28, 35],
+                backgroundColor: 'rgba(230,126,34,0.7)',
+                borderColor: '#e67e22',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
 
-var ctxPie = document.getElementById('pieChart').getContext('2d');
-new Chart(ctxPie, {
-    type: 'pie',
-    data: {
-        labels: ['Đã duyệt', 'Chờ duyệt'],
-        datasets: [{
-            data: [$approvedMotel, $pendingMotel],
-            backgroundColor: ['rgba(39,174,96,0.8)', 'rgba(241,196,15,0.8)'],
-            borderColor: ['#27ae60','#f1c40f'],
-            borderWidth: 2
-        }]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
+    new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Đã duyệt', 'Chờ duyệt'],
+            datasets: [{
+                data: [94, 34],
+                backgroundColor: ['rgba(39,174,96,0.8)', 'rgba(241,196,15,0.8)'],
+                borderColor: ['#27ae60', '#f1c40f'],
+                borderWidth: 2
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
 });
-</script>";
-include 'layout_bottom.php';
-?>
+</script>
+
+<?php include 'layout_bottom.php'; ?>

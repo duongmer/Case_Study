@@ -58,11 +58,9 @@ if (isset($_GET['tim'])) {
     $tim = $_GET['tim'];
 }
 $sql = "SELECT * FROM user";
-
 if (!empty($tim)) {
     $sql .= " WHERE Name LIKE '%$tim%' OR Username LIKE '%$tim%' OR Email LIKE '%$tim%' OR Phone LIKE '%$tim%'";
 }
-
 $sql .= " ORDER BY ID";
 $result = $conn->query($sql);
 

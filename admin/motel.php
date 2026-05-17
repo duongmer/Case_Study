@@ -1,54 +1,82 @@
 <?php
-require_once 'config.php';
+include "config.php";
 checkAdmin();
-
-$pageTitle   = 'Quản lý phòng trọ';
-$currentPage = 'motel';
+//sua
+$error_edit = '';
+if (isset($_POST['btnsua'])) {
+    $id = $_POST['id'];
+    $title = $_POST['title'];
+    $price = $_POST['price'];
+    $area = $_POST['area'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $district_id = $_POST['district_id'];
+    $approve = (int)$_POST['approve'];
+    $description = $_POST['description'];
+    
+    $sql_check = "SELECT * FROM motel WHERE (title='$title') AND ID!=$id";
+    $check = $conn->query($sql_check);
+    if ($check->num_rows > 0) {
+        $row = $check->fetch_assoc();
+        if ($row['title'] == $title){
+            $error_edit = 'Tên trọ đã tồn tại, vui lòng chọn tiêu đề khác.';
+        }
+    } 
+    else {
+    $conn->query("UPDATE motel SET 
+        title='$title', price=$price, area=$area, address='$address',
+        phone='$phone', district_id=$district_id, approve=$approve,
+        description='$description'
+        WHERE ID=$id");
+        header('Location: motel.php');
+        exit();
+    }
+}
 // Duyệt phòng
 if (isset($_GET['approve'])) {
     $id = (int)$_GET['approve'];
-    $conn->query("UPDATE motel SET approve=1 WHERE ID=$id");
-    header("Location: motel.php?ok=approve"); exit;
+    $sql_duyet = "UPDATE motel SET approve = 1 WHERE ID=$id";
+    $conn->query("$sql_duyet");
+    header("Location: motel.php");
+    exit();
 }
 // Ẩn phòng
 if (isset($_GET['hide'])) {
     $id = (int)$_GET['hide'];
-    $conn->query("UPDATE motel SET approve=0 WHERE ID=$id");
-    header("Location: motel.php?ok=hide"); exit;
+    $sql_an = "UPDATE motel SET approve = 0 WHERE ID=$id";
+    $conn->query("$sql_an");
+    header("Location: motel.php");
+    exit();
 }
 // Xóa phòng
 if (isset($_GET['delete'])) {
     $id = (int)$_GET['delete'];
-    $conn->query("DELETE FROM motel WHERE ID=$id");
-    header("Location: motel.php?ok=delete"); exit;
+    $sql_xoa = "DELETE FROM motel WHERE ID=$id";
+    $conn->query("$sql_xoa");
+    header("Location: motel.php");
+    exit();
 }
 
-// Thông báo sau redirect
-$alertScript = '';
-if (isset($_GET['ok'])) {
-    $msgs = ['approve'=>'Đã duyệt phòng trọ!','hide'=>'Đã ẩn phòng trọ!','delete'=>'Đã xóa phòng trọ!','saved'=>'Lưu thành công!'];
-    $alertScript = "swal('Thành công!','" . ($msgs[$_GET['ok']] ?? '') . "','success');";
+$tim = '';
+if (isset($_GET['tim'])) {
+    $tim = $_GET['tim'];
 }
-
-// Tìm kiếm & lọc
-$keyword   = trim($_GET['keyword'] ?? '');
-$districtF = (int)($_GET['district'] ?? 0);
-$approveF  = $_GET['approve_filter'] ?? '';
-
-$where = '1=1';
-if ($keyword)   $where .= " AND m.title LIKE '%" . $conn->real_escape_string($keyword) . "%'";
-if ($districtF) $where .= " AND m.district_id=$districtF";
-if ($approveF !== '') $where .= " AND m.approve=" . (int)$approveF;
-
-$motels = $conn->query("SELECT m.*, u.Name owner, d.Name district 
-    FROM motel m 
-    JOIN user u ON m.user_id=u.ID 
-    JOIN districts d ON m.district_id=d.ID 
-    WHERE $where ORDER BY m.created_at DESC");
+$khuvuc = (int)($_GET['district'] ?? 0);
+$trangthai = $_GET['approve_filter'] ?? '';
+$sql = "SELECT m.*, u.Name ten, d.Name district FROM motel m JOIN user u ON m.user_id = u.ID JOIN districts d ON m.district_id = d.ID";
+if (!empty($tim)){
+    $sql .= " WHERE m.title LIKE '%$tim%'";
+}
+if ($khuvuc){
+    $sql .= " AND m.district_id = $khuvuc";
+}
+if ($trangthai !== '') {
+    $sql .= " AND m.approve=" . (int)$trangthai;
+}
+$sql .= " ORDER BY m.ID DESC";
+$motels = $conn->query($sql);
 
 $districts = $conn->query("SELECT * FROM districts ORDER BY Name");
-
-$extraHead = '<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">';
 include 'layout_top.php';
 ?>
 
@@ -59,11 +87,6 @@ include 'layout_top.php';
   </ul>
   <div id="clock"></div>
 </div>
-
-<?php if ($alertScript): ?>
-<script>$(document).ready(function(){ <?= $alertScript ?> });</script>
-<?php endif; ?>
-
 <div class="row">
   <div class="col-md-12">
     <div class="tile">
@@ -86,27 +109,26 @@ include 'layout_top.php';
         <!-- Bộ lọc -->
         <form method="GET" class="row" style="margin-bottom:16px; background:#f8f9fa; padding:14px; border-radius:6px;">
           <div class="col-md-4">
-            <input type="text" name="keyword" class="form-control form-control-sm"
-                   placeholder="🔍 Tìm theo tiêu đề..." value="<?= htmlspecialchars($keyword) ?>">
+            <input type="text" name="tim" class="form-control form-control-sm"
+                   placeholder="🔍 Tìm theo tiêu đề..." value="<?php echo $tim ;?>">
           </div>
           <div class="col-md-3">
             <select name="district" class="form-control form-control-sm">
               <option value="">-- Tất cả quận/phường --</option>
-              <?php $districts->data_seek(0); while ($d = $districts->fetch_assoc()): ?>
-              <option value="<?= $d['ID'] ?>" <?= $districtF==$d['ID']?'selected':'' ?>><?= $d['Name'] ?></option>
-              <?php endwhile; ?>
+              <?php $districts->data_seek(0); while ($d = $districts->fetch_assoc()){ ?>
+              <option value="<?php echo $d['ID']; ?>" <?= $khuvuc == $d['ID']?> > <?= $d['Name'] ?></option>
+              <?php } ?>
             </select>
           </div>
           <div class="col-md-3">
             <select name="approve_filter" class="form-control form-control-sm">
               <option value="">-- Tất cả trạng thái --</option>
-              <option value="1" <?= $approveF==='1'?'selected':'' ?>>Đã duyệt</option>
-              <option value="0" <?= $approveF==='0'?'selected':'' ?>>Chờ duyệt</option>
+              <option value="1" <?php echo $trangthai =='1'?>>Đã duyệt</option>
+              <option value="0" <?php echo $trangthai =='0'?>>Chờ duyệt</option>
             </select>
           </div>
           <div class="col-md-2">
             <button type="submit" class="btn btn-add btn-sm"><i class="fas fa-search"></i> Lọc</button>
-            <a href="motel.php" class="btn btn-delete btn-sm">Reset</a>
           </div>
         </form>
 
@@ -117,7 +139,7 @@ include 'layout_top.php';
               <th>ID</th>
               <th>Tiêu đề</th>
               <th>Giá (VNĐ)</th>
-              <th>DT</th>
+              <th>Diện tích</th>
               <th>Quận</th>
               <th>Người đăng</th>
               <th>SĐT</th>
@@ -127,49 +149,46 @@ include 'layout_top.php';
             </tr>
           </thead>
           <tbody>
-            <?php while ($row = $motels->fetch_assoc()): ?>
+            <?php foreach ($motels as $row) {?>
             <tr>
-              <td>#<?= $row['ID'] ?></td>
-              <td><?= htmlspecialchars($row['title']) ?></td>
-              <td><?= number_format($row['price']) ?></td>
-              <td><?= $row['area'] ?> m²</td>
-              <td><?= htmlspecialchars($row['district']) ?></td>
-              <td><?= htmlspecialchars($row['owner']) ?></td>
-              <td><?= $row['phone'] ?></td>
-              <td><?= $row['count_view'] ?></td>
+              <td><?php echo $row['ID']; ?></td>
+              <td><?php echo ($row['title']); ?></td>
+              <td><?php echo ($row['price']); ?> đ</td>
+              <td><?php echo ($row['area']); ?> m²</td>
+              <td><?php echo ($row['district']); ?></td>
+              <td><?php echo ($row['ten']); ?></td>
+              <td><?php echo ($row['phone']); ?></td>
+              <td><?php echo ($row['count_view']); ?></td>
               <td>
-                <?php if ($row['approve'] == 1): ?>
+                <?php if ($row['approve'] == 1) { ?>
                   <span class="badge bg-success">Đã duyệt</span>
-                <?php else: ?>
+                <?php } else { ?>
                   <span class="badge bg-warning">Chờ duyệt</span>
-                <?php endif; ?>
+                <?php } ?>
               </td>
               <td class="table-td-center">
-                <!-- Sửa -->
                 <button class="btn btn-primary btn-sm" title="Sửa"
-                  onclick="openEdit(<?= $row['ID'] ?>,'<?= addslashes($row['title']) ?>',<?= $row['price'] ?>,<?= $row['area'] ?>,'<?= addslashes($row['address']) ?>','<?= $row['phone'] ?>',<?= $row['district_id'] ?>,<?= $row['approve'] ?>,'<?= addslashes($row['description']) ?>')"
+                  onclick="openEdit(<?php echo $row['ID']; ?>,'<?php echo $row['title']; ?>','<?php echo $row['price']; ?>','<?php echo $row['area']; ?>','<?php echo $row['address']; ?>','<?php echo $row['phone']; ?>',<?php echo $row['district_id']; ?>,<?php echo $row['approve']; ?>,'<?php echo $row['description']; ?>')"
                   data-toggle="modal" data-target="#ModalEdit">
                   <i class="fas fa-edit"></i>
                 </button>
-                <!-- Duyệt / Ẩn -->
-                <?php if ($row['approve'] == 0): ?>
-                <a class="btn btn-success btn-sm" href="motel.php?approve=<?= $row['ID'] ?>" title="Duyệt"
+                <?php if ($row['approve'] == 0){ ?>
+                <a class="btn btn-success btn-sm" href="motel.php?approve=<?php echo $row['ID'];?>"
                    onclick="return confirm('Duyệt phòng trọ này?')">
                   <i class="fas fa-check"></i>
                 </a>
-                <?php else: ?>
-                <a class="btn btn-warning btn-sm" href="motel.php?hide=<?= $row['ID'] ?>" title="Ẩn"
+                <?php } else{ ?>
+                <a class="btn btn-warning btn-sm" href="motel.php?hide=<?php echo $row['ID'];?>"
                    onclick="return confirm('Ẩn phòng trọ này?')">
                   <i class="fas fa-eye-slash"></i>
                 </a>
-                <?php endif; ?>
-                <!-- Xóa -->
-                <button class="btn btn-primary btn-sm trash" title="Xóa" data-id="<?= $row['ID'] ?>">
+                <?php } ?>
+                <button class="btn btn-primary btn-sm trash" data-id="<?php echo $row['ID']; ?>">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </td>
             </tr>
-            <?php endwhile; ?>
+            <?php } ?>
           </tbody>
         </table>
 
@@ -178,14 +197,16 @@ include 'layout_top.php';
   </div>
 </div>
 
-<!-- Modal Sửa phòng trọ -->
 <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <h5>✏️ Chỉnh sửa thông tin phòng trọ</h5>
         <hr>
-        <form method="POST" action="motel_edit.php">
+        <?php if (!empty($error_edit)) { ?>
+          <div id = "loi_sua" class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?php echo $error_edit; ?></div>
+        <?php } ?>
+        <form method="POST">
           <input type="hidden" name="id" id="edit_id">
           <div class="row">
             <div class="form-group col-md-12">
@@ -228,21 +249,45 @@ include 'layout_top.php';
               <textarea class="form-control" name="description" id="edit_desc" rows="3"></textarea>
             </div>
           </div>
-          <button class="btn btn-save" type="submit">Lưu lại</button>
+          <button class="btn btn-save" type="submit" name="btnsua">Lưu lại</button>
           <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
         </form>
       </div>
     </div>
   </div>
 </div>
+<?php if (!empty($error_edit)) { ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // 1. Hàm này chạy sẽ điền lại dữ liệu, nhưng vô tình giấu luôn khung lỗi
+        openEdit(
+            <?php echo $_POST['id']; ?>,
+            '<?php echo $_POST['title']; ?>',
+            '<?php echo $_POST['price']; ?>',
+            '<?php echo $_POST['area']; ?>',
+            '<?php echo $_POST['address']; ?>',
+            '<?php echo $_POST['phone']; ?>',
+            '<?php echo $_POST['district_id']; ?>',
+            '<?php echo $_POST['approve']; ?>',
+            '<?php echo $_POST['description']; ?>'
+        );
 
+        // 2. THÊM DÒNG NÀY VÀO ĐÂY: Ép khung lỗi hiển thị trở lại!
+        document.getElementById('loi_sua').style.display = 'block';
+
+        // 3. Tự động bật Modal Sửa lên
+        $('#ModalEdit').modal('show');
+    });
+</script>
+<?php } ?>
 <?php
 $extraScript = "
 <script src='https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'></script>
 <script src='https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js'></script>
 <script>
 $(document).ready(function(){
-    $('#motelTable').DataTable({ language: { url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
+    $('#motelTable').DataTable({searching: false,language: { url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json' } });
 
     // Xóa phòng (sweetalert)
     $('.trash').click(function(){
@@ -262,6 +307,11 @@ function openEdit(id,title,price,area,address,phone,district,approve,desc){
     document.getElementById('edit_district').value = district;
     document.getElementById('edit_approve').value = approve;
     document.getElementById('edit_desc').value = desc;
+    // THÊM ĐOẠN NÀY VÀO: Tìm và giấu khung báo lỗi đi
+    var khungLoi = document.getElementById('loi_sua');
+    if (khungLoi) {
+        khungLoi.style.display = 'none'; // Ẩn nó đi
+    }
 }
 </script>";
 include 'layout_bottom.php';
