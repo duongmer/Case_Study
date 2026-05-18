@@ -52,20 +52,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // KIỂM TRA: Chấp nhận cả mật khẩu mã hóa hoặc mật khẩu thường (như 123456)
-            if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
-                // LƯU SESSION
-                $_SESSION['user_id'] = $row['ID'];
-                $_SESSION['user_name'] = $row['Name'];
-                $_SESSION['login_fails'] = 0; 
-                
-                // HIỆN THÔNG BÁO VÀ VÀO TRANG CHỦ
-                echo "<script>
-                    alert('Đăng nhập thành công! Chào " . $row['Name'] . "');
-                    window.location.href = 'index.php';
-                </script>";
-                exit();
-            } else {
+         
+if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
+ 
+    $_SESSION['user_id'] = $row['ID'];
+    $_SESSION['user_name'] = $row['Name'];
+    $_SESSION['role'] = $row['Role']; 
+    $_SESSION['login_fails'] = 0; 
+    
+   
+    if ($row['Role'] == 1) {
+       
+        $trang_chuyen_huong = 'admin/index.php';
+    } else {
+        
+        $trang_chuyen_huong = 'index.php';
+    }
+
+    // HIỆN THÔNG BÁO VÀ ĐIỀU HƯỚNG
+    echo "<script>
+        alert('Đăng nhập thành công! Chào " . $row['Name'] . "');
+        window.location.href = '" . $trang_chuyen_huong . "';
+    </script>";
+    exit();
+} else {
                 // Sai mật khẩu
                 $_SESSION['login_fails'] = isset($_SESSION['login_fails']) ? $_SESSION['login_fails'] + 1 : 1;
                 $msg = "Mật khẩu không đúng! (Sai " . $_SESSION['login_fails'] . " lần)";
