@@ -32,7 +32,7 @@
             <a href="login.html" class="text-decoration-none text-muted fw-bold me-2">Đăng nhập</a>
           <?php endif; ?>
 
-          <a href="quan_ly_tin.php" class="btn btn-dark rounded-pill px-4">Đăng tin ngay</a>
+          <a href="nguoidung/quan_ly_tin.php" class="btn btn-dark rounded-pill px-4">Đăng tin ngay</a>
         </div>
       </div>
     </div>

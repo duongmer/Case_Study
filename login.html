@@ -1,557 +1,539 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GTPT - Hệ Thống Đăng Tin Phòng Trọ</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTPT - Hệ Thống Đăng Tin Phòng Trọ</title>
 
-    <style>
-      :root {
-        --primary: #4e73df;
-        --primary-hover: #2e59d9;
-        --text-dark: #1f2937;
-        --text-gray: #6b7280;
-        --bg-light: #f3f4f6;
-        --white: #ffffff;
-        --error: #ef4444;
-        --success: #10b981;
-      }
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
+  <style>
+    :root {
+      --primary: #4e73df;
+      --primary-hover: #2e59d9;
+      --text-dark: #1f2937;
+      --text-gray: #6b7280;
+      --bg-light: #f3f4f6;
+      --white: #ffffff;
+      --error: #ef4444;
+      --success: #10b981;
+    }
 
-      body {
-        background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-      h1 {
-        font-weight: 700;
-        margin: 0;
-        font-size: 26px;
-        color: var(--text-dark);
-      }
-      p {
-        font-size: 14px;
-        font-weight: 300;
-        line-height: 20px;
-        letter-spacing: 0.5px;
-        margin: 5px 0 20px;
-        color: var(--text-gray);
-      }
+    body {
+      background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-      KHUNG CHỨA CHÍNH */ .container {
-        background-color: var(--white);
-        border-radius: 20px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        max-width: 900px;
-        min-height: 650px;
-      }
+    h1 {
+      font-weight: 700;
+      margin: 0;
+      font-size: 26px;
+      color: var(--text-dark);
+    }
 
-      .form-container {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        transition: all 0.6s ease-in-out;
-      }
-      .form-wrapper {
-        background-color: var(--white);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 0 40px;
-        height: 100%;
-        text-align: center;
-        width: 100%;
-      }
-      form {
-        width: 100%;
-      }
+    p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 5px 0 20px;
+      color: var(--text-gray);
+    }
 
-      .sign-in-container {
-        left: 0;
-        width: 50%;
-        z-index: 2;
-      }
-      .container.right-panel-active .sign-in-container {
-        transform: translateX(100%);
-        opacity: 0;
-      }
+    KHUNG CHỨA CHÍNH */ .container {
+      background-color: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      max-width: 900px;
+      min-height: 650px;
+    }
 
-      .sign-up-container {
-        left: 0;
-        width: 50%;
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .form-wrapper {
+      background-color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      height: 100%;
+      text-align: center;
+      width: 100%;
+    }
+
+    form {
+      width: 100%;
+    }
+
+    .sign-in-container {
+      left: 0;
+      width: 50%;
+      z-index: 2;
+    }
+
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    .sign-up-container {
+      left: 0;
+      width: 50%;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%);
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s;
+    }
+
+    @keyframes show {
+
+      0%,
+      49.99% {
         opacity: 0;
         z-index: 1;
       }
-      .container.right-panel-active .sign-up-container {
-        transform: translateX(100%);
+
+      50%,
+      100% {
         opacity: 1;
         z-index: 5;
-        animation: show 0.6s;
+      }
+    }
+
+    .social-container {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .social-container form {
+      width: 50%;
+    }
+
+    .social-btn {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: var(--white);
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+      color: var(--text-dark);
+    }
+
+    .social-btn.fb:hover {
+      background: #4267b2;
+      color: white;
+      border-color: #4267b2;
+    }
+
+    .social-btn.gg:hover {
+      background: #db4437;
+      color: white;
+      border-color: #db4437;
+    }
+
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 10px 0 15px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .divider span {
+      padding: 0 10px;
+      color: #9ca3af;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .input-group {
+      position: relative;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .input-group i:not(.captcha-refresh) {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      z-index: 2;
+    }
+
+    .input-group input {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 15px 12px 45px;
+      width: 100%;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: var(--white);
+      box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+    }
+
+    .captcha-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .captcha-box {
+      flex-shrink: 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #f3f4f6;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .captcha-refresh {
+      flex-shrink: 0;
+      cursor: pointer;
+      color: var(--primary);
+      padding: 10px;
+      border-radius: 8px;
+      background: #e0e7ff;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .captcha-refresh:hover {
+      background: var(--primary);
+      color: white;
+      transform: rotate(180deg);
+    }
+
+    .captcha-group input {
+      padding: 12px 15px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .captcha-group input:focus {
+      border-color: var(--primary);
+      background-color: var(--white);
+      box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
+    }
+
+    .btn-main {
+      border-radius: 10px;
+      border: none;
+      background-color: var(--primary);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: 0.3s;
+    }
+
+    .btn-main:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      border: 2px solid var(--white);
+      color: var(--white);
+      border-radius: 25px;
+      padding: 10px 35px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: 600;
+      transition: 0.3s;
+      text-transform: uppercase;
+    }
+
+    .btn-ghost:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+      border-radius: 30px 0 0 30px;
+    }
+
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+      border-radius: 0 30px 30px 0;
+    }
+
+    .overlay {
+      background: linear-gradient(135deg,
+          rgba(78, 115, 223, 0.85) 0%,
+          rgba(46, 89, 217, 0.85) 100%),
+        url("https://images.unsplash.com/photo-1560518883-ce09059eeefa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80") no-repeat center center;
+      background-size: cover;
+      color: #ffffff;
+      position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .container.right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 50px;
+      text-align: center;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+
+    .container.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .container.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    .mobile-switch {
+      display: none;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-gray);
+    }
+
+    .mobile-switch a {
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        min-height: 750px;
       }
 
-      @keyframes show {
-        0%,
-        49.99% {
-          opacity: 0;
-          z-index: 1;
-        }
-        50%,
-        100% {
-          opacity: 1;
-          z-index: 5;
-        }
-      }
-
-      .social-container {
-        display: flex;
-        gap: 15px;
+      .sign-in-container,
+      .sign-up-container {
         width: 100%;
-        margin-bottom: 15px;
-      }
-      .social-container form {
-        width: 50%;
-      }
-      .social-btn {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        background: var(--white);
-        font-weight: 500;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.3s;
-        color: var(--text-dark);
-      }
-      .social-btn.fb:hover {
-        background: #4267b2;
-        color: white;
-        border-color: #4267b2;
-      }
-      .social-btn.gg:hover {
-        background: #db4437;
-        color: white;
-        border-color: #db4437;
-      }
-
-      .divider {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        margin: 10px 0 15px;
-      }
-      .divider::before,
-      .divider::after {
-        content: "";
-        flex: 1;
-        border-bottom: 1px solid #e5e7eb;
-      }
-      .divider span {
-        padding: 0 10px;
-        color: #9ca3af;
-        font-size: 12px;
-        text-transform: uppercase;
-      }
-
-      .input-group {
-        position: relative;
-        width: 100%;
-        margin-bottom: 15px;
-      }
-      .input-group i:not(.captcha-refresh) {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9ca3af;
-        z-index: 2;
-      }
-      .input-group input {
-        background-color: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 12px 15px 12px 45px;
-        width: 100%;
-        font-size: 14px;
-        transition: all 0.3s;
-      }
-      .input-group input:focus {
-        outline: none;
-        border-color: var(--primary);
-        background-color: var(--white);
-        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
-      }
-
-      .captcha-group {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-      .captcha-box {
-        flex-shrink: 0;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        background: #f3f4f6;
-        overflow: hidden;
-        position: relative;
-      }
-      .captcha-refresh {
-        flex-shrink: 0;
-        cursor: pointer;
-        color: var(--primary);
-        padding: 10px;
-        border-radius: 8px;
-        background: #e0e7ff;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .captcha-refresh:hover {
-        background: var(--primary);
-        color: white;
-        transform: rotate(180deg);
-      }
-      .captcha-group input {
-        padding: 12px 15px;
-        background-color: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        width: 100%;
-        font-size: 14px;
-        outline: none;
-      }
-      .captcha-group input:focus {
-        border-color: var(--primary);
-        background-color: var(--white);
-        box-shadow: 0 0 0 4px rgba(78, 115, 223, 0.1);
-      }
-
-      .btn-main {
-        border-radius: 10px;
-        border: none;
-        background-color: var(--primary);
-        color: var(--white);
-        font-size: 15px;
-        font-weight: 600;
-        padding: 12px;
-        width: 100%;
-        cursor: pointer;
-        margin-top: 5px;
-        transition: 0.3s;
-      }
-      .btn-main:hover {
-        background-color: var(--primary-hover);
-      }
-      .btn-ghost {
-        background-color: transparent;
-        border: 2px solid var(--white);
-        color: var(--white);
-        border-radius: 25px;
-        padding: 10px 35px;
-        cursor: pointer;
-        margin-top: 20px;
-        font-weight: 600;
-        transition: 0.3s;
-        text-transform: uppercase;
-      }
-      .btn-ghost:hover {
-        background-color: rgba(255, 255, 255, 0.15);
+        left: 0;
       }
 
       .overlay-container {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 50%;
-        height: 100%;
-        overflow: hidden;
-        transition: transform 0.6s ease-in-out;
-        z-index: 100;
-        border-radius: 30px 0 0 30px;
-      }
-      .container.right-panel-active .overlay-container {
-        transform: translateX(-100%);
-        border-radius: 0 30px 30px 0;
-      }
-      .overlay {
-        background: linear-gradient(
-            135deg,
-            rgba(78, 115, 223, 0.85) 0%,
-            rgba(46, 89, 217, 0.85) 100%
-          ),
-          url("https://images.unsplash.com/photo-1560518883-ce09059eeefa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80")
-            no-repeat center center;
-        background-size: cover;
-        color: #ffffff;
-        position: relative;
-        left: -100%;
-        height: 100%;
-        width: 200%;
-        transform: translateX(0);
-        transition: transform 0.6s ease-in-out;
-      }
-      .container.right-panel-active .overlay {
-        transform: translateX(50%);
-      }
-      .overlay-panel {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 0 50px;
-        text-align: center;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        transition: transform 0.6s ease-in-out;
-      }
-      .overlay-left {
-        transform: translateX(-20%);
-      }
-      .container.right-panel-active .overlay-left {
-        transform: translateX(0);
-      }
-      .overlay-right {
-        right: 0;
-        transform: translateX(0);
-      }
-      .container.right-panel-active .overlay-right {
-        transform: translateX(20%);
+        display: none;
       }
 
       .mobile-switch {
-        display: none;
-        margin-top: 20px;
-        font-size: 14px;
-        color: var(--text-gray);
-      }
-      .mobile-switch a {
-        color: var(--primary);
-        font-weight: 600;
-        cursor: pointer;
-      }
-      @media (max-width: 768px) {
-        .container {
-          min-height: 750px;
-        }
-        .sign-in-container,
-        .sign-up-container {
-          width: 100%;
-          left: 0;
-        }
-        .overlay-container {
-          display: none;
-        }
-        .mobile-switch {
-          display: block;
-        }
-        .container.right-panel-active .sign-in-container {
-          transform: none;
-          opacity: 0;
-          z-index: 1;
-          pointer-events: none;
-        }
-        .container.right-panel-active .sign-up-container {
-          transform: none;
-          opacity: 1;
-          z-index: 5;
-          pointer-events: auto;
-        }
+        display: block;
       }
 
-      #thong_bao {
-        position: fixed;
-        top: 20px;
-        right: -350px;
-        padding: 16px 25px;
-        border-radius: 10px;
-        color: white;
-        font-weight: 500;
-        font-size: 15px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        gap: 12px;
+      .container.right-panel-active .sign-in-container {
+        transform: none;
+        opacity: 0;
+        z-index: 1;
+        pointer-events: none;
       }
-      #thong_bao.show {
-        right: 20px;
+
+      .container.right-panel-active .sign-up-container {
+        transform: none;
+        opacity: 1;
+        z-index: 5;
+        pointer-events: auto;
       }
-      .toast-success {
-        background-color: var(--success);
-      }
-      .toast-error {
-        background-color: var(--error);
-      }
-    </style>
-  </head>
-  <body>
-    <div id="thong_bao">
-      <i id="icon_thong_bao"></i> <span id="chu_thong_bao"></span>
-    </div>
+    }
 
-    <div class="container" id="khung_chinh">
-      <div class="form-container sign-up-container">
-        <div class="form-wrapper">
-          <h1>Tạo Tài Khoản</h1>
-          <div class="divider"><span>nhập thông tin của bạn</span></div>
+    #thong_bao {
+      position: fixed;
+      top: 20px;
+      right: -350px;
+      padding: 16px 25px;
+      border-radius: 10px;
+      color: white;
+      font-weight: 500;
+      font-size: 15px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-          <form id="form_dang_ky" action="xulylogin.php" method="POST">
-            <input type="hidden" name="action" value="register" />
+    #thong_bao.show {
+      right: 20px;
+    }
 
-            <div class="input-group">
-              <i class="fa-solid fa-user-pen"></i>
-              <input type="text" name="name" placeholder="Họ và tên" required />
-            </div>
-            <div class="input-group">
-              <i class="fa-solid fa-user"></i>
-              <input
-                type="text"
-                name="username"
-                placeholder="Tên đăng nhập"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <i class="fa-solid fa-envelope"></i>
-              <input
-                type="email"
-                name="email"
-                placeholder="Địa chỉ Email"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <i class="fa-solid fa-lock"></i>
-              <input
-                type="password"
-                id="mat_khau"
-                name="password"
-                placeholder="Mật khẩu (ít nhất 6 ký tự)"
-                required
-              />
-            </div>
-            <div class="input-group">
-              <i class="fa-solid fa-shield-check"></i>
-              <input
-                type="password"
-                id="nhap_lai_mat_khau"
-                name="re_password"
-                placeholder="Nhập lại mật khẩu"
-                required
-              />
-            </div>
+    .toast-success {
+      background-color: var(--success);
+    }
 
-            <div class="captcha-group">
-              <div class="captcha-box">
-                <canvas id="ve_captcha_dk" width="140" height="46"></canvas>
-              </div>
-              <div
-                class="captcha-refresh"
-                onclick="taoMaXacNhan('DangKy')"
-                title="Đổi mã khác"
-              >
-                <i class="fa-solid fa-rotate-right"></i>
-              </div>
-              <input
-                type="text"
-                id="nhap_captcha_dk"
-                placeholder="Nhập đủ 3 ký tự"
-                required
-                autocomplete="off"
-              />
-            </div>
+    .toast-error {
+      background-color: var(--error);
+    }
+  </style>
+</head>
 
-            <button type="submit" class="btn-main">Đăng Ký Thành Viên</button>
-          </form>
+<body>
+  <div id="thong_bao">
+    <i id="icon_thong_bao"></i> <span id="chu_thong_bao"></span>
+  </div>
 
-          <div class="mobile-switch">
-            Đã có tài khoản? <a id="mobile_chuyen_dang_nhap">Đăng Nhập</a>
+  <div class="container" id="khung_chinh">
+    <div class="form-container sign-up-container">
+      <div class="form-wrapper">
+        <h1>Tạo Tài Khoản</h1>
+        <div class="divider"><span>nhập thông tin của bạn</span></div>
+
+        <form id="form_dang_ky" action="checklogin/xulylogin.php" method="POST">
+          <input type="hidden" name="action" value="register" />
+
+          <div class="input-group">
+            <i class="fa-solid fa-user-pen"></i>
+            <input type="text" name="name" placeholder="Họ và tên" required />
           </div>
+          <div class="input-group">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="username" placeholder="Tên đăng nhập" required />
+          </div>
+          <div class="input-group">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" name="email" placeholder="Địa chỉ Email" required />
+          </div>
+          <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="mat_khau" name="password" placeholder="Mật khẩu (ít nhất 6 ký tự)" required />
+          </div>
+          <div class="input-group">
+            <i class="fa-solid fa-shield-check"></i>
+            <input type="password" id="nhap_lai_mat_khau" name="re_password" placeholder="Nhập lại mật khẩu" required />
+          </div>
+
+          <div class="captcha-group">
+            <div class="captcha-box">
+              <canvas id="ve_captcha_dk" width="140" height="46"></canvas>
+            </div>
+            <div class="captcha-refresh" onclick="taoMaXacNhan('DangKy')" title="Đổi mã khác">
+              <i class="fa-solid fa-rotate-right"></i>
+            </div>
+            <input type="text" id="nhap_captcha_dk" placeholder="Nhập đủ 3 ký tự" required autocomplete="off" />
+          </div>
+
+          <button type="submit" class="btn-main">Đăng Ký Thành Viên</button>
+        </form>
+
+        <div class="mobile-switch">
+          Đã có tài khoản? <a id="mobile_chuyen_dang_nhap">Đăng Nhập</a>
         </div>
       </div>
+    </div>
 
-      <div class="form-container sign-in-container">
-        <div class="form-wrapper">
-          <h1>Đăng Nhập</h1>
-          <div class="divider"><span>vào hệ thống GTPT</span></div>
+    <div class="form-container sign-in-container">
+      <div class="form-wrapper">
+        <h1>Đăng Nhập</h1>
+        <div class="divider"><span>vào hệ thống GTPT</span></div>
 
-          <form id="form_dang_nhap" action="xulylogin.php" method="POST">
-            <input type="hidden" name="action" value="login" />
+        <form id="form_dang_nhap" action="checklogin/xulylogin.php" method="POST">
+          <input type="hidden" name="action" value="login" />
 
-            <div class="input-group">
-              <i class="fa-solid fa-user"></i>
-              <input
-                type="text"
-                name="username"
-                placeholder="Tên đăng nhập"
-                required
-              />
+          <div class="input-group">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="username" placeholder="Tên đăng nhập" required />
+          </div>
+          <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" name="password" placeholder="Mật khẩu" required />
+          </div>
+
+          <div class="captcha-group">
+            <div class="captcha-box">
+              <canvas id="ve_captcha_dn" width="140" height="46"></canvas>
             </div>
-            <div class="input-group">
-              <i class="fa-solid fa-lock"></i>
-              <input
-                type="password"
-                name="password"
-                placeholder="Mật khẩu"
-                required
-              />
+            <div class="captcha-refresh" onclick="taoMaXacNhan('DangNhap')" title="Đổi mã khác">
+              <i class="fa-solid fa-rotate-right"></i>
             </div>
+            <input type="text" id="nhap_captcha_dn" placeholder="Nhập đủ 3 ký tự" required autocomplete="off" />
+          </div>
 
-            <div class="captcha-group">
-              <div class="captcha-box">
-                <canvas id="ve_captcha_dn" width="140" height="46"></canvas>
-              </div>
-              <div
-                class="captcha-refresh"
-                onclick="taoMaXacNhan('DangNhap')"
-                title="Đổi mã khác"
-              >
-                <i class="fa-solid fa-rotate-right"></i>
-              </div>
-              <input
-                type="text"
-                id="nhap_captcha_dn"
-                placeholder="Nhập đủ 3 ký tự"
-                required
-                autocomplete="off"
-              />
-            </div>
-
-            <a
-              href="#"
-              style="
+          <a href="#" style="
                 font-size: 13px;
                 color: var(--primary);
                 margin: 5px 0 15px;
@@ -559,210 +541,209 @@
                 display: block;
                 text-align: right;
                 font-weight: 500;
-              "
-              >Quên mật khẩu?</a
-            >
-            <button type="submit" class="btn-main">Đăng Nhập</button>
-          </form>
+              ">Quên mật khẩu?</a>
+          <button type="submit" class="btn-main">Đăng Nhập</button>
+        </form>
 
-          <div class="mobile-switch">
-            Chưa có tài khoản? <a id="mobile_chuyen_dang_ky">Đăng Ký Ngay</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="overlay-container">
-        <div class="overlay">
-          <div class="overlay-panel overlay-left">
-            <h1 style="color: white">Chào bạn trở lại!</h1>
-            <p style="color: white">Đăng nhập để quản lý phòng trọ của bạn.</p>
-            <button class="btn-ghost" id="nut_chuyen_dang_nhap">
-              Đăng Nhập
-            </button>
-          </div>
-          <div class="overlay-panel overlay-right">
-            <h1 style="color: white">Xin chào!</h1>
-            <p style="color: white">
-              Đăng ký để đăng tin và tìm kiếm phòng trọ dễ dàng.
-            </p>
-            <button class="btn-ghost" id="nut_chuyen_dang_ky">
-              Tạo Tài Khoản
-            </button>
-          </div>
+        <div class="mobile-switch">
+          Chưa có tài khoản? <a id="mobile_chuyen_dang_ky">Đăng Ký Ngay</a>
         </div>
       </div>
     </div>
 
-    <script>
-      const khungChinh = document.getElementById("khung_chinh");
-      document
-        .getElementById("nut_chuyen_dang_ky")
-        .addEventListener("click", () =>
-          khungChinh.classList.add("right-panel-active")
-        );
-      document
-        .getElementById("nut_chuyen_dang_nhap")
-        .addEventListener("click", () =>
-          khungChinh.classList.remove("right-panel-active")
-        );
-      document
-        .getElementById("mobile_chuyen_dang_ky")
-        .addEventListener("click", () =>
-          khungChinh.classList.add("right-panel-active")
-        );
-      document
-        .getElementById("mobile_chuyen_dang_nhap")
-        .addEventListener("click", () =>
-          khungChinh.classList.remove("right-panel-active")
-        );
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1 style="color: white">Chào bạn trở lại!</h1>
+          <p style="color: white">Đăng nhập để quản lý phòng trọ của bạn.</p>
+          <button class="btn-ghost" id="nut_chuyen_dang_nhap">
+            Đăng Nhập
+          </button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1 style="color: white">Xin chào!</h1>
+          <p style="color: white">
+            Đăng ký để đăng tin và tìm kiếm phòng trọ dễ dàng.
+          </p>
+          <button class="btn-ghost" id="nut_chuyen_dang_ky">
+            Tạo Tài Khoản
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      function hienThiThongBao(loiNhan, loaiThongBao) {
-        const hopThongBao = document.getElementById("thong_bao");
-        document.getElementById("chu_thong_bao").textContent = loiNhan;
-        hopThongBao.className = ""; // Reset class
+  <script>
+    const khungChinh = document.getElementById("khung_chinh");
+    document
+      .getElementById("nut_chuyen_dang_ky")
+      .addEventListener("click", () =>
+        khungChinh.classList.add("right-panel-active")
+      );
+    document
+      .getElementById("nut_chuyen_dang_nhap")
+      .addEventListener("click", () =>
+        khungChinh.classList.remove("right-panel-active")
+      );
+    document
+      .getElementById("mobile_chuyen_dang_ky")
+      .addEventListener("click", () =>
+        khungChinh.classList.add("right-panel-active")
+      );
+    document
+      .getElementById("mobile_chuyen_dang_nhap")
+      .addEventListener("click", () =>
+        khungChinh.classList.remove("right-panel-active")
+      );
 
-        if (loaiThongBao === "success") {
-          hopThongBao.classList.add("toast-success");
-          document.getElementById("icon_thong_bao").className =
-            "fa-solid fa-circle-check";
-        } else {
-          hopThongBao.classList.add("toast-error");
-          document.getElementById("icon_thong_bao").className =
-            "fa-solid fa-circle-exclamation";
-        }
+    function hienThiThongBao(loiNhan, loaiThongBao) {
+      const hopThongBao = document.getElementById("thong_bao");
+      document.getElementById("chu_thong_bao").textContent = loiNhan;
+      hopThongBao.className = ""; // Reset class
 
-        hopThongBao.classList.add("show");
-        setTimeout(() => hopThongBao.classList.remove("show"), 3500); // Tự ẩn sau 3.5s
+      if (loaiThongBao === "success") {
+        hopThongBao.classList.add("toast-success");
+        document.getElementById("icon_thong_bao").className =
+          "fa-solid fa-circle-check";
+      } else {
+        hopThongBao.classList.add("toast-error");
+        document.getElementById("icon_thong_bao").className =
+          "fa-solid fa-circle-exclamation";
       }
 
-      window.onload = function () {
-        const thamSoURL = new URLSearchParams(window.location.search);
-        if (thamSoURL.get("msg")) {
-          hienThiThongBao(
-            decodeURIComponent(thamSoURL.get("msg")),
-            thamSoURL.get("type")
-          );
-          if (thamSoURL.get("type") === "success")
-            khungChinh.classList.remove("right-panel-active");
-        }
-        window.history.replaceState(null, "", window.location.pathname); // Xóa URL cho sạch đẹp
+      hopThongBao.classList.add("show");
+      setTimeout(() => hopThongBao.classList.remove("show"), 3500); // Tự ẩn sau 3.5s
+    }
 
-        taoMaXacNhan("DangKy");
-        taoMaXacNhan("DangNhap");
-      };
-
-      let maLuuTruDangKy = "";
-      let maLuuTruDangNhap = "";
-
-      // Hàm vẽ chữ ngẫu nhiên lên vùng Canvas
-      function taoMaXacNhan(loaiForm) {
-        const theCanvas = document.getElementById(
-          "ve_captcha_" + (loaiForm === "DangKy" ? "dk" : "dn")
+    window.onload = function () {
+      const thamSoURL = new URLSearchParams(window.location.search);
+      if (thamSoURL.get("msg")) {
+        hienThiThongBao(
+          decodeURIComponent(thamSoURL.get("msg")),
+          thamSoURL.get("type")
         );
-        const butVe = theCanvas.getContext("2d");
-        butVe.clearRect(0, 0, theCanvas.width, theCanvas.height);
+        if (thamSoURL.get("type") === "success")
+          khungChinh.classList.remove("right-panel-active");
+      }
+      window.history.replaceState(null, "", window.location.pathname); // Xóa URL cho sạch đẹp
 
-        // Đã xóa bỏ các ký tự dễ nhầm lẫn: 0, O, o, 1, l, L, I, i
-        const danhSachKyTu =
-          "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
-        let chuoiNgauNhien = "";
+      taoMaXacNhan("DangKy");
+      taoMaXacNhan("DangNhap");
+    };
 
-        // CÓ 3 KÝ TỰ
-        for (let i = 0; i < 3; i++) {
-          chuoiNgauNhien +=
-            danhSachKyTu[Math.floor(Math.random() * danhSachKyTu.length)];
-        }
+    let maLuuTruDangKy = "";
+    let maLuuTruDangNhap = "";
 
-        // Lưu lại mã để tí check xem user nhập đúng không
-        if (loaiForm === "DangKy") maLuuTruDangKy = chuoiNgauNhien;
-        else maLuuTruDangNhap = chuoiNgauNhien;
+    // Hàm vẽ chữ ngẫu nhiên lên vùng Canvas
+    function taoMaXacNhan(loaiForm) {
+      const theCanvas = document.getElementById(
+        "ve_captcha_" + (loaiForm === "DangKy" ? "dk" : "dn")
+      );
+      const butVe = theCanvas.getContext("2d");
+      butVe.clearRect(0, 0, theCanvas.width, theCanvas.height);
 
-        // Bắt đầu vẽ chữ lên Canvas (Đã phóng to và căng lề chuẩn)
-        butVe.font = "bold 28px Courier New";
-        butVe.fillStyle = "#2e59d9";
-        butVe.textBaseline = "middle";
-        butVe.textAlign = "center"; // Đảm bảo chữ nằm cân chính giữa tọa độ X
+      // Đã xóa bỏ các ký tự dễ nhầm lẫn: 0, O, o, 1, l, L, I, i
+      const danhSachKyTu =
+        "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
+      let chuoiNgauNhien = "";
 
-        // Làm rối: Xoay nghiêng từng chữ
-        for (let i = 0; i < chuoiNgauNhien.length; i++) {
-          // ĐÃ FIX LỖI: Chia đều khung 140px, bắt đầu xa hơn (x = 30), cách nhau 40px
-          butVe.setTransform(
-            1,
-            Math.random() * 0.2 - 0.1,
-            Math.random() * 0.2 - 0.1,
-            1,
-            30 + i * 40,
-            23
-          );
-          butVe.fillText(chuoiNgauNhien[i], 0, 0);
-        }
-        butVe.setTransform(1, 0, 0, 1, 0, 0); // Reset lại khung vẽ
-
-        // Thêm 3 đường kẻ ngang dọc rối mắt (nhưng làm màu mờ nhạt đi để không che chữ)
-        for (let i = 0; i < 3; i++) {
-          butVe.beginPath();
-          butVe.moveTo(
-            Math.random() * theCanvas.width,
-            Math.random() * theCanvas.height
-          );
-          butVe.lineTo(
-            Math.random() * theCanvas.width,
-            Math.random() * theCanvas.height
-          );
-          butVe.strokeStyle = "#cbd5e1"; // Màu xám nhạt
-          butVe.stroke();
-        }
+      // CÓ 3 KÝ TỰ
+      for (let i = 0; i < 3; i++) {
+        chuoiNgauNhien +=
+          danhSachKyTu[Math.floor(Math.random() * danhSachKyTu.length)];
       }
 
-      // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG KÝ
-      document
-        .getElementById("form_dang_ky")
-        .addEventListener("submit", function (suKien) {
-          const matKhau = document.getElementById("mat_khau").value;
-          const nhapLaiMatKhau =
-            document.getElementById("nhap_lai_mat_khau").value;
-          const maNguoiDungNhap =
-            document.getElementById("nhap_captcha_dk").value;
+      // Lưu lại mã để tí check xem user nhập đúng không
+      if (loaiForm === "DangKy") maLuuTruDangKy = chuoiNgauNhien;
+      else maLuuTruDangNhap = chuoiNgauNhien;
 
-          // Check độ dài mật khẩu
-          if (matKhau.length < 6) {
-            suKien.preventDefault(); // Lệnh này giúp chặn Form không cho gửi dữ liệu đi
-            hienThiThongBao("Mật khẩu phải chứa ít nhất 6 ký tự!", "error");
-            return;
-          }
-          // Check khớp mật khẩu
-          if (matKhau !== nhapLaiMatKhau) {
-            suKien.preventDefault();
-            hienThiThongBao("Mật khẩu nhập lại không khớp!", "error");
-            return;
-          }
-          // Check mã Captcha
-          if (maNguoiDungNhap.toLowerCase() !== maLuuTruDangKy.toLowerCase()) {
-            suKien.preventDefault();
-            hienThiThongBao("Mã Captcha không chính xác!", "error");
-            taoMaXacNhan("DangKy"); // Gõ sai thì cho đổi mã mới luôn
-            document.getElementById("nhap_captcha_dk").value = ""; // Xóa trắng ô nhập
-            return;
-          }
-        });
+      // Bắt đầu vẽ chữ lên Canvas (Đã phóng to và căng lề chuẩn)
+      butVe.font = "bold 28px Courier New";
+      butVe.fillStyle = "#2e59d9";
+      butVe.textBaseline = "middle";
+      butVe.textAlign = "center"; // Đảm bảo chữ nằm cân chính giữa tọa độ X
 
-      // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG NHẬP
-      document
-        .getElementById("form_dang_nhap")
-        .addEventListener("submit", function (suKien) {
-          const maNguoiDungNhap =
-            document.getElementById("nhap_captcha_dn").value;
+      // Làm rối: Xoay nghiêng từng chữ
+      for (let i = 0; i < chuoiNgauNhien.length; i++) {
+        // ĐÃ FIX LỖI: Chia đều khung 140px, bắt đầu xa hơn (x = 30), cách nhau 40px
+        butVe.setTransform(
+          1,
+          Math.random() * 0.2 - 0.1,
+          Math.random() * 0.2 - 0.1,
+          1,
+          30 + i * 40,
+          23
+        );
+        butVe.fillText(chuoiNgauNhien[i], 0, 0);
+      }
+      butVe.setTransform(1, 0, 0, 1, 0, 0); // Reset lại khung vẽ
 
-          if (
-            maNguoiDungNhap.toLowerCase() !== maLuuTruDangNhap.toLowerCase()
-          ) {
-            suKien.preventDefault();
-            hienThiThongBao("Mã Captcha không chính xác!", "error");
-            taoMaXacNhan("DangNhap");
-            document.getElementById("nhap_captcha_dn").value = "";
-            return;
-          }
-        });
-    </script>
-  </body>
+      // Thêm 3 đường kẻ ngang dọc rối mắt (nhưng làm màu mờ nhạt đi để không che chữ)
+      for (let i = 0; i < 3; i++) {
+        butVe.beginPath();
+        butVe.moveTo(
+          Math.random() * theCanvas.width,
+          Math.random() * theCanvas.height
+        );
+        butVe.lineTo(
+          Math.random() * theCanvas.width,
+          Math.random() * theCanvas.height
+        );
+        butVe.strokeStyle = "#cbd5e1"; // Màu xám nhạt
+        butVe.stroke();
+      }
+    }
+
+    // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG KÝ
+    document
+      .getElementById("form_dang_ky")
+      .addEventListener("submit", function (suKien) {
+        const matKhau = document.getElementById("mat_khau").value;
+        const nhapLaiMatKhau =
+          document.getElementById("nhap_lai_mat_khau").value;
+        const maNguoiDungNhap =
+          document.getElementById("nhap_captcha_dk").value;
+
+        // Check độ dài mật khẩu
+        if (matKhau.length < 6) {
+          suKien.preventDefault(); // Lệnh này giúp chặn Form không cho gửi dữ liệu đi
+          hienThiThongBao("Mật khẩu phải chứa ít nhất 6 ký tự!", "error");
+          return;
+        }
+        // Check khớp mật khẩu
+        if (matKhau !== nhapLaiMatKhau) {
+          suKien.preventDefault();
+          hienThiThongBao("Mật khẩu nhập lại không khớp!", "error");
+          return;
+        }
+        // Check mã Captcha
+        if (maNguoiDungNhap.toLowerCase() !== maLuuTruDangKy.toLowerCase()) {
+          suKien.preventDefault();
+          hienThiThongBao("Mã Captcha không chính xác!", "error");
+          taoMaXacNhan("DangKy"); // Gõ sai thì cho đổi mã mới luôn
+          document.getElementById("nhap_captcha_dk").value = ""; // Xóa trắng ô nhập
+          return;
+        }
+      });
+
+    // KIỂM TRA RÀNG BUỘC KHI ẤN NÚT ĐĂNG NHẬP
+    document
+      .getElementById("form_dang_nhap")
+      .addEventListener("submit", function (suKien) {
+        const maNguoiDungNhap =
+          document.getElementById("nhap_captcha_dn").value;
+
+        if (
+          maNguoiDungNhap.toLowerCase() !== maLuuTruDangNhap.toLowerCase()
+        ) {
+          suKien.preventDefault();
+          hienThiThongBao("Mã Captcha không chính xác!", "error");
+          taoMaXacNhan("DangNhap");
+          document.getElementById("nhap_captcha_dn").value = "";
+          return;
+        }
+      });
+  </script>
+</body>
+
 </html>

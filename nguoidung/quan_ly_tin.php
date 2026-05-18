@@ -1,7 +1,6 @@
 <?php
+include '../include/ketnoi.php';
 session_start();
-include('ketnoi.php');
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
     exit();
@@ -37,7 +36,7 @@ if (isset($_GET['thue_id'])) {
 </head>
 <body class="bg-light">
 
-<?php include('menu.php'); ?>
+<?php include('../include/menu.php'); ?>
 
 <div class="container" style="margin-top: 100px; margin-bottom: 50px;">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -115,6 +114,6 @@ if (isset($_GET['thue_id'])) {
     </div>
 </div>
 
-<?php include('footer.php'); ?>
+<?php include('../include/footer.php'); ?>
 </body>
 </html>
