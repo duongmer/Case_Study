@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $avatar = $conn->query("SELECT Avatar FROM USER WHERE ID=$uid")->fetchColumn();
         if (!empty($_FILES['avatar']['name'])) {
             $avatar = $_FILES['avatar']['name'];
-            move_uploaded_file($_FILES['avatar']['tmp_name'], "uploads/$avatar");
+            move_uploaded_file($_FILES['avatar']['tmp_name'], "assets/images/$avatar");
         }
         $conn->prepare("UPDATE USER SET Name=?, Phone=?, Avatar=? WHERE ID=?")->execute([$_POST['name'], $_POST['phone'], $avatar, $uid]);
         $msg = "Thành công!";
@@ -27,6 +27,7 @@ $u = $conn->query("SELECT * FROM USER WHERE ID=$uid")->fetch(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Tài khoản</title>
 </head>
@@ -36,7 +37,7 @@ $u = $conn->query("SELECT * FROM USER WHERE ID=$uid")->fetch(PDO::FETCH_ASSOC);
         <?= $msg ? "<div class='alert alert-info p-2 small'>$msg</div>" : "" ?>
         <form method="POST" enctype="multipart/form-data">
             <div class="text-center mb-3">
-                <img src="uploads/<?= $u['Avatar'] ?: 'default.png' ?>" class="rounded-circle border" width="80" height="80" style="object-fit:cover">
+                <img src="assets/images/<?= $u['Avatar'] ?: 'default.png' ?>" class="rounded-circle border" width="80" height="80" style="object-fit:cover">
             </div>
             <input type="text" name="name" class="form-control mb-2" value="<?= $u['Name'] ?>" placeholder="Họ tên" required>
             <input type="text" name="phone" class="form-control mb-2" value="<?= $u['Phone'] ?>" placeholder="SĐT">
