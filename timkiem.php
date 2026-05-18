@@ -1,5 +1,5 @@
 <?php
-include('include/ketnoi.php');
+include('ketnoi.php');
 
 // =============================================
 // XỬ LÝ THAM SỐ TÌM KIẾM TỪ URL
@@ -293,7 +293,7 @@ function buildUrl($extra = []) {
 </head>
 <body>
 
-<?php include('include/menu.php'); ?>
+<?php include('menu.php'); ?>
 
 <!-- Search Hero -->
 <div class="search-hero">
@@ -560,7 +560,7 @@ function buildUrl($extra = []) {
   </div>
 </div>
 
-<?php include('include/footer.php'); ?>
+<?php include('footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

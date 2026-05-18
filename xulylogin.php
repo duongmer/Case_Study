@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 // HIỆN THÔNG BÁO VÀ VÀO TRANG CHỦ
                 echo "<script>
                     alert('Đăng nhập thành công! Chào " . $row['Name'] . "');
-                    window.location.href = '../index.php';
+                    window.location.href = 'index.php';
                 </script>";
                 exit();
             } else {

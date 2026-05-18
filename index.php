@@ -14,11 +14,11 @@
 </head>
 <body>
   <?php
-  include('include/menu.php');
+  include('menu.php');
   
-  include('include/timkiemptro.php');
-  include('include/hienthiptro.php');
-  include('include/footer.php');
+  include('timkiemptro.php');
+  include('hienthiptro.php');
+  include('footer.php');
   ?>
   <!-- Bootstrap 5 Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

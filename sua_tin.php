@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../include/ketnoi.php');
+include('ketnoi.php');
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.html");
@@ -71,7 +71,7 @@ if (isset($_POST['btnLuu'])) {
 </head>
 <body class="bg-light">
 
-<?php include('../include/menu.php'); ?>
+<?php include('menu.php'); ?>
 
 <div class="container" style="margin-top: 100px; max-width: 800px; margin-bottom: 50px;">
     <div class="card shadow-sm border-0 rounded-4 p-4">
@@ -145,6 +145,6 @@ if (isset($_POST['btnLuu'])) {
     </div>
 </div>
 
-<?php include('../include/footer.php'); ?>
+<?php include('footer.php'); ?>
 </body>
 </html>
