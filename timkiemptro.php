@@ -1,4 +1,4 @@
-  <!-- Hero Section -->
+<!-- Hero Section -->
   <section class="hero-section">
     <div class="container mt-5">
       <div class="row align-items-center">
@@ -22,10 +22,10 @@
                 <i class="bi bi-buildings text-amber"></i>
                 <select name="loai" class="form-select border-0 shadow-none fw-bold">
                   <option value="">Loại hình</option>
-                  <option value="1">Phòng trọ</option>
-                  <option value="2">Căn hộ Studio</option>
-                  <option value="3">Nhà nguyên căn</option>
-                  <option value="4">Ở ghép</option>
+                  <option value="Phòng trọ">Phòng trọ</option>
+                  <option value="Căn hộ Studio">Căn hộ Studio</option>
+                  <option value="Nhà nguyên căn">Nhà nguyên căn</option>
+                  <option value="Ở ghép">Ở ghép</option>
                 </select>
               </div>
               <div class="search-input-group d-none d-md-flex">
@@ -48,8 +48,8 @@
           <!-- Quick category links -->
           <div class="d-flex gap-2 flex-wrap mb-4">
             <span class="text-muted small fw-bold align-self-center">Tìm nhanh:</span>
-            <a href="timkiem.php?loai=1" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Phòng trọ</a>
-            <a href="timkiem.php?loai=2" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Căn hộ Studio</a>
+            <a href="timkiem.php?loai=Ph%C3%B2ng+tr%E1%BB%8D" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Phòng trọ</a>
+            <a href="timkiem.php?loai=C%C4%83n+h%E1%BB%99+Studio" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Căn hộ Studio</a>
             <a href="timkiem.php?gia_max=3" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Dưới 3 triệu</a>
             <a href="timkiem.php?sap_xep=xem_nhieu" class="badge text-bg-light fw-bold text-muted text-decoration-none py-2 px-3 rounded-pill">Xem nhiều nhất</a>
           </div>
