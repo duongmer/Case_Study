@@ -17,9 +17,27 @@ $offset    = ($page - 1) * $per_page;
 // =============================================
 // XÂY DỰNG CÂU QUERY ĐỘNG
 // =============================================
-$where_parts = ["approve = 1"];
+// Hiển thị tất cả tin đăng, bao gồm cả tin chưa duyệt
+$where_parts = ["1"];
 $params      = [];
 $types       = '';
+
+// Detect which category column (if any) exists in `motel` table
+$category_col = null;
+$col_check = $conn->query("SHOW COLUMNS FROM motel LIKE 'category_id'");
+if ($col_check && $col_check->num_rows > 0) {
+  $category_col = 'category_id';
+} else {
+  $col_check = $conn->query("SHOW COLUMNS FROM motel LIKE 'category_name'");
+  if ($col_check && $col_check->num_rows > 0) {
+    $category_col = 'category_name';
+  } else {
+    $col_check = $conn->query("SHOW COLUMNS FROM motel LIKE 'category'");
+    if ($col_check && $col_check->num_rows > 0) {
+      $category_col = 'category';
+    }
+  }
+}
 
 if (!empty($keyword)) {
     $where_parts[] = "(title LIKE ? OR address LIKE ? OR description LIKE ?)";
@@ -28,10 +46,31 @@ if (!empty($keyword)) {
     $types .= 'sss';
 }
 
-if (!empty($loai)) {
-    $where_parts[] = "category_name = ?";
-    $params[] = $loai;
+$category_map = [
+    1 => 'Phòng trọ',
+    2 => 'Căn hộ Studio',
+    3 => 'Nhà nguyên căn',
+    4 => 'Ở ghép',
+];
+
+if (!empty($loai) && $category_col !== null) {
+  $where_parts[] = "$category_col = ?";
+  if ($category_col === 'category_id') {
+    if (is_numeric($loai)) {
+      $params[] = (int)$loai;
+    } else {
+      $idx = array_search($loai, $category_map, true);
+      $params[] = $idx !== false ? $idx : 0;
+    }
+    $types .= 'i';
+  } else {
+    if (is_numeric($loai)) {
+      $params[] = $category_map[(int)$loai] ?? $loai;
+    } else {
+      $params[] = $loai;
+    }
     $types .= 's';
+  }
 }
 
 if ($gia_min > 0) {
@@ -321,10 +360,10 @@ function buildUrl($extra = []) {
           <i class="bi bi-buildings"></i>
           <select name="loai">
             <option value="">Tất cả loại</option>
-            <option value="Phòng trọ"     <?php if($loai=='Phòng trọ')     echo 'selected'; ?>>Phòng trọ</option>
-            <option value="Căn hộ Studio" <?php if($loai=='Căn hộ Studio') echo 'selected'; ?>>Căn hộ Studio</option>
-            <option value="Nhà nguyên căn"<?php if($loai=='Nhà nguyên căn')echo 'selected'; ?>>Nhà nguyên căn</option>
-            <option value="Ở ghép"        <?php if($loai=='Ở ghép')        echo 'selected'; ?>>Ở ghép</option>
+            <option value="1" <?php if($loai==1) echo 'selected'; ?>>Phòng trọ</option>
+            <option value="2" <?php if($loai==2) echo 'selected'; ?>>Căn hộ Studio</option>
+            <option value="3" <?php if($loai==3) echo 'selected'; ?>>Nhà nguyên căn</option>
+            <option value="4" <?php if($loai==4) echo 'selected'; ?>>Ở ghép</option>
           </select>
         </div>
         <div class="divider-v"></div>
@@ -361,15 +400,15 @@ function buildUrl($extra = []) {
           <div class="mb-4">
             <label class="range-label mb-2 d-block">Loại hình</label>
             <?php
-            $loai_list = ['Phòng trọ','Căn hộ Studio','Nhà nguyên căn','Ở ghép'];
-            foreach ($loai_list as $l):
+            $loai_list = [1 => 'Phòng trọ', 2 => 'Căn hộ Studio', 3 => 'Nhà nguyên căn', 4 => 'Ở ghép'];
+            foreach ($loai_list as $id => $label):
             ?>
             <div class="form-check mb-1">
-              <input class="form-check-input" type="radio" name="loai" id="loai_<?php echo md5($l); ?>"
-                value="<?php echo htmlspecialchars($l); ?>"
-                <?php if ($loai === $l) echo 'checked'; ?>>
-              <label class="form-check-label fw-semibold small" for="loai_<?php echo md5($l); ?>">
-                <?php echo htmlspecialchars($l); ?>
+              <input class="form-check-input" type="radio" name="loai" id="loai_<?php echo $id; ?>"
+                value="<?php echo $id; ?>"
+                <?php if ((int)$loai === $id) echo 'checked'; ?>>
+              <label class="form-check-label fw-semibold small" for="loai_<?php echo $id; ?>">
+                <?php echo htmlspecialchars($label); ?>
               </label>
             </div>
             <?php endforeach; ?>
@@ -452,7 +491,10 @@ function buildUrl($extra = []) {
       <!-- Active filter chips -->
       <?php
       $active_filters = [];
-      if (!empty($loai))      $active_filters[] = ['label'=>$loai, 'key'=>'loai'];
+      if (!empty($loai)) {
+        $cat_labels = [1=>'Phòng trọ',2=>'Căn hộ Studio',3=>'Nhà nguyên căn',4=>'Ở ghép'];
+        $active_filters[] = ['label'=>($cat_labels[(int)$loai] ?? $loai), 'key'=>'loai'];
+      }
       if ($gia_max > 0)       $active_filters[] = ['label'=>'Dưới '.$gia_max.'tr', 'key'=>'gia_max'];
       if ($dien_tich > 0)     $active_filters[] = ['label'=>'Từ '.$dien_tich.'m²', 'key'=>'dien_tich'];
       if (!empty($active_filters)):
@@ -486,14 +528,29 @@ function buildUrl($extra = []) {
         <div class="row g-4">
           <?php while ($row = $result->fetch_object()):
             $images = !empty($row->images) ? explode(',', $row->images) : [];
-            $img = !empty($images) ? 'assets/images/' . $images[0] : 'https://picsum.photos/seed/'.$row->ID.'/600/400';
+            $img = '';
+            if (!empty($images)) {
+              $img = get_image_url($images[0]);
+            }
+            if (empty($img)) $img = 'https://picsum.photos/seed/'.$row->ID.'/600/400';
             $utils = !empty($row->utilities) ? explode(',', $row->utilities) : [];
           ?>
           <div class="col-md-6 col-xl-4">
             <div class="result-card">
               <div class="result-img-wrap">
                 <img src="<?php echo htmlspecialchars($img); ?>" class="result-img" alt="<?php echo htmlspecialchars($row->title); ?>">
-                <span class="result-badge"><?php echo htmlspecialchars($row->category_name ?? 'Phòng trọ'); ?></span>
+                <span class="result-badge">
+                  <?php
+                    $cat_label = 'Phòng trọ';
+                    if (!empty($row->category_id)) {
+                      if ($row->category_id == 1) $cat_label = 'Phòng trọ';
+                      elseif ($row->category_id == 2) $cat_label = 'Căn hộ Studio';
+                      elseif ($row->category_id == 3) $cat_label = 'Nhà nguyên căn';
+                      elseif ($row->category_id == 4) $cat_label = 'Ở ghép';
+                    }
+                    echo htmlspecialchars($cat_label);
+                  ?>
+                </span>
               </div>
               <div class="result-body">
                 <h6 class="result-title"><?php echo htmlspecialchars($row->title); ?></h6>
