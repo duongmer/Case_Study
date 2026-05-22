@@ -160,7 +160,7 @@
 
 <?php
 
-include('include/ketnoi.php');
+include('ketnoi.php');
 
 if(isset($_GET['id'])){
 
@@ -196,7 +196,7 @@ if(isset($_GET['id'])){
     exit;
 }
 
-include("include/menu.php");
+include("menu.php");
 
 ?>
 
@@ -209,7 +209,7 @@ include("include/menu.php");
 
             <!-- IMAGE -->
             <div class="info-card p-2">
-                <img src="<?php echo 'images/' .  $row["images"]; ?>"
+                <img src="<?php echo 'assets/images/' .  $row["images"]; ?>"
                      class="gallery-img"
                      alt="<?php echo $row["title"]; ?>">
             </div>
@@ -492,4 +492,4 @@ $conn->close();
 
 </body>
 </html>
-<?php include("include/footer.php") ?>
+<?php include("footer.php") ?>
