@@ -7,7 +7,7 @@
             <div class="brand-icon"><i class="bi bi-house-door-fill"></i></div>
             Homi
           </a>
-          <p class="text-muted fw-medium pe-lg-5">Nền tảng tìm kiếm và cho thuê nhà trọ hiện đại, chuyên nghiệp dành cho sinh viên và người đi làm.</p>
+          <p class="text-white fw-medium pe-lg-5">Nền tảng tìm kiếm và cho thuê nhà trọ hiện đại, chuyên nghiệp dành cho sinh viên và người đi làm.</p>
         </div>
         <div class="col-6 col-md-2 mb-4">
           <h6 class="fw-bold mb-4">Dịch vụ</h6>
@@ -47,7 +47,6 @@
       </div>
       <hr class="mt-5 border-light">
       <div class="d-flex flex-column flex-md-row justify-content-between py-3">
-        <p class="small text-muted fw-bold">© 2026 HOMI CORP. BẢN QUYỀN THUỘC AI STUDIO.</p>
         <div class="d-flex gap-4">
           <a href="#" class="text-muted text-decoration-none small fw-bold">Điều khoản</a>
           <a href="#" class="text-muted text-decoration-none small fw-bold">Bảo mật</a>

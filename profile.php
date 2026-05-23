@@ -30,6 +30,8 @@ $u = $conn->query("SELECT * FROM USER WHERE ID=$uid")->fetch(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Tài khoản</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" sizes="16x16"/>
+
 </head>
 <body class="bg-light p-5">
     <div class="card mx-auto p-4 shadow-sm" style="max-width: 420px;">

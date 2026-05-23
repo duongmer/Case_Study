@@ -15,7 +15,7 @@ if (session_status() === PHP_SESSION_NONE) {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="index.php">Trang chủ</a></li>
-          <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Tìm phòng</a></li>
+          <li class="nav-item px-3"><a class="nav-link fw-semibold" href="timkiem.php">Tìm phòng</a></li>
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Cẩm nang</a></li>
           <li class="nav-item px-3"><a class="nav-link fw-semibold" href="#">Hỗ trợ</a></li>
         </ul>

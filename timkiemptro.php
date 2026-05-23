@@ -64,7 +64,9 @@
           </div>
         </div>
         <div class="col-lg-5 d-none d-lg-block">
-          <img src="https://picsum.photos/seed/home/800/1000" class="img-fluid rounded-5 shadow-lg" alt="Home">
+          <div class="image-container-lime">
+            <img src="assets/images/hero_house.png" class="img-fluid" alt="Homi Modern Rental Apartment">
+          </div>
         </div>
       </div>
     </div>

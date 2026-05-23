@@ -20,7 +20,7 @@
   <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
   <ul class="app-nav">
     <li>
-      <a class="app-nav__item" href="login.php?logout=1" title="Đăng xuất">
+      <a class="app-nav__item" href="../login.html" title="Đăng xuất">
         <i class='bx bx-log-out bx-rotate-180'></i>
       </a>
     </li>

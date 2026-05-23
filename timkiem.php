@@ -104,21 +104,22 @@ function buildUrl($extra = []) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kết quả tìm kiếm<?php echo !empty($keyword) ? ' - ' . htmlspecialchars($keyword) : ''; ?> | Homi</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" sizes="16x16"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <style>
     /* ===== SEARCH PAGE EXTRAS ===== */
     .search-hero {
-      background: linear-gradient(135deg, #fff7ed 0%, #fff 60%);
+      background: linear-gradient(135deg, var(--bs-lime-light) 0%, #fff 60%);
       padding: 100px 0 32px;
       border-bottom: 1px solid #f1f5f9;
     }
     .search-bar-wrap {
       background: #fff;
       border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(245,158,11,.10), 0 2px 8px rgba(0,0,0,.05);
+      box-shadow: 0 8px 32px rgba(132,204,22,.10), 0 2px 8px rgba(0,0,0,.05);
       padding: 10px 12px;
       display: flex;
       gap: 8px;
@@ -145,11 +146,11 @@ function buildUrl($extra = []) {
       width: 100%;
     }
     .search-field select option { font-weight: 400; }
-    .search-field i { color: #f59e0b; flex-shrink: 0; }
+    .search-field i { color: var(--bs-primary-hover); flex-shrink: 0; }
     .divider-v { width: 1px; background: #f1f5f9; height: 36px; }
     .btn-search-main {
-      background: #f59e0b;
-      color: #fff;
+      background: var(--bs-primary);
+      color: var(--bs-secondary);
       border: none;
       border-radius: 14px;
       padding: 12px 28px;
@@ -157,9 +158,9 @@ function buildUrl($extra = []) {
       font-family: inherit;
       font-size: .95rem;
       white-space: nowrap;
-      transition: background .2s;
+      transition: all .2s;
     }
-    .btn-search-main:hover { background: #d97706; color: #fff; }
+    .btn-search-main:hover { background: var(--bs-primary-hover); color: #fff; }
 
     /* Filter bar */
     .filter-bar {
@@ -188,9 +189,9 @@ function buildUrl($extra = []) {
       text-decoration: none;
     }
     .filter-chip:hover, .filter-chip.active {
-      border-color: #f59e0b;
-      background: #fffbeb;
-      color: #d97706;
+      border-color: var(--bs-primary);
+      background: var(--bs-lime-light);
+      color: var(--bs-primary-hover);
     }
     .filter-chip .bi-x { font-size: .9rem; }
 
@@ -243,7 +244,7 @@ function buildUrl($extra = []) {
     }
     .result-address { font-size: .8rem; color: #94a3b8; font-weight: 500; }
     .result-meta { display: flex; gap: 12px; font-size: .8rem; color: #64748b; font-weight: 500; margin: 10px 0; }
-    .result-price { font-size: 1.25rem; font-weight: 800; color: #f59e0b; }
+    .result-price { font-size: 1.25rem; font-weight: 800; color: var(--bs-primary-hover); }
     .btn-detail {
       background: #0f172a;
       color: #fff;
@@ -251,11 +252,11 @@ function buildUrl($extra = []) {
       border-radius: 50%;
       width: 38px; height: 38px;
       display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
+      transition: all .2s;
       flex-shrink: 0;
       text-decoration: none;
     }
-    .btn-detail:hover { background: #f59e0b; color: #fff; }
+    .btn-detail:hover { background: var(--bs-primary); color: var(--bs-secondary); }
 
     /* Pagination */
     .pagination .page-link {
@@ -267,11 +268,11 @@ function buildUrl($extra = []) {
       padding: 8px 14px;
     }
     .pagination .page-item.active .page-link {
-      background: #f59e0b;
-      border-color: #f59e0b;
-      color: #fff;
+      background: var(--bs-primary);
+      border-color: var(--bs-primary);
+      color: var(--bs-secondary);
     }
-    .pagination .page-link:hover:not(.active) { background: #fffbeb; border-color: #f59e0b; color: #d97706; }
+    .pagination .page-link:hover:not(.active) { background: var(--bs-lime-light); border-color: var(--bs-primary); color: var(--bs-primary-hover); }
 
     /* Empty state */
     .empty-state { text-align: center; padding: 64px 20px; }
@@ -287,8 +288,8 @@ function buildUrl($extra = []) {
       top: 80px;
     }
     .adv-filter h6 { font-weight: 700; color: #0f172a; margin-bottom: 16px; }
-    .form-range::-webkit-slider-thumb { background: #f59e0b; }
-    .form-range::-moz-range-thumb { background: #f59e0b; }
+    .form-range::-webkit-slider-thumb { background: var(--bs-primary); }
+    .form-range::-moz-range-thumb { background: var(--bs-primary); }
     .range-label { font-size: .82rem; font-weight: 600; color: #64748b; }
 
     @media (max-width: 768px) {
@@ -492,7 +493,7 @@ function buildUrl($extra = []) {
         <div class="row g-4">
           <?php while ($row = $result->fetch_object()):
             $images = !empty($row->images) ? explode(',', $row->images) : [];
-            $img = !empty($images) ? 'images/' . $images[0] : 'https://picsum.photos/seed/'.$row->ID.'/600/400';
+            $img = !empty($images) ? 'assets/images/' . $images[0] : 'https://picsum.photos/seed/'.$row->ID.'/600/400';
             $utils = !empty($row->utilities) ? explode(',', $row->utilities) : [];
           ?>
           <div class="col-md-6 col-xl-4">
