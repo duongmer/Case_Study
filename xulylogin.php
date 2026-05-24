@@ -1,10 +1,8 @@
 <?php
-// Bắt đầu Session theo chuẩn bài học
+
 session_start();
 
-// ---------------------------------------------------------
-// CẤU HÌNH KẾT NỐI CƠ SỞ DỮ LIỆU
-// ---------------------------------------------------------
+
 $host = "localhost";
 $db_name = "GTPT";
 $db_user = "root";
@@ -17,9 +15,7 @@ try {
     die("Lỗi kết nối CSDL: Vui lòng kiểm tra lại XAMPP.");
 }
 
-// ---------------------------------------------------------
-// HÀM HỖ TRỢ ĐIỀU HƯỚNG VỀ LOGIN.HTML (Dùng cho thông báo lỗi)
-// ---------------------------------------------------------
+
 function redirect($msg, $type = 'error', $userName = '') {
     $url = "login.html?msg=" . urlencode($msg) . "&type=" . urlencode($type);
     if ($userName !== '') {
@@ -29,13 +25,10 @@ function redirect($msg, $type = 'error', $userName = '') {
     exit();
 }
 
-// Kiểm tra xem form có gửi action lên không
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     $action = $_POST['action'];
 
-    // ==========================================
-    // 1. XỬ LÝ ĐĂNG NHẬP
-    // ==========================================
     if ($action === 'login') {
         $user = trim($_POST['username']);
         $pass = $_POST['password'];
@@ -44,7 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             redirect("Vui lòng điền đầy đủ tài khoản và mật khẩu.");
         }
 
-        // Tìm user trong Database
         $query = "SELECT * FROM USER WHERE Username = :username";
         $stmt = $conn->prepare($query);
         $stmt->execute([':username' => $user]);
@@ -69,7 +61,6 @@ if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
         $trang_chuyen_huong = 'index.php';
     }
 
-    // HIỆN THÔNG BÁO VÀ ĐIỀU HƯỚNG
     echo "<script>
         alert('Đăng nhập thành công! Chào " . $row['Name'] . "');
         window.location.href = '" . $trang_chuyen_huong . "';
@@ -86,9 +77,7 @@ if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
         }
     }
 
-    // ==========================================
-    // 2. XỬ LÝ ĐĂNG KÝ
-    // ==========================================
+   
     elseif ($action === 'register') {
         $name = trim($_POST['name']);
         $user = trim($_POST['username']);
@@ -111,7 +100,7 @@ if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
             redirect("Tài khoản hoặc Email này đã được sử dụng!");
         }
 
-        // LƯU MẬT KHẨU THƯỜNG (Để đồng bộ với an01, binh02...)
+
         $hashed_password = $pass; 
         $role = 0; 
         
@@ -134,7 +123,7 @@ if (password_verify($pass, $row['Password']) || $pass === $row['Password']) {
     }
 }
 
-// Nếu vào trực tiếp file này thì đẩy về login.html
+
 header("Location: login.html");
 exit();
 ?>

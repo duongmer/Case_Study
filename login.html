@@ -634,7 +634,6 @@
     let maLuuTruDangKy = "";
     let maLuuTruDangNhap = "";
 
-    // Hàm vẽ chữ ngẫu nhiên lên vùng Canvas
     function taoMaXacNhan(loaiForm) {
       const theCanvas = document.getElementById(
         "ve_captcha_" + (loaiForm === "DangKy" ? "dk" : "dn")
@@ -642,30 +641,26 @@
       const butVe = theCanvas.getContext("2d");
       butVe.clearRect(0, 0, theCanvas.width, theCanvas.height);
 
-      // Đã xóa bỏ các ký tự dễ nhầm lẫn: 0, O, o, 1, l, L, I, i
       const danhSachKyTu =
         "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
       let chuoiNgauNhien = "";
 
-      // CÓ 3 KÝ TỰ
       for (let i = 0; i < 3; i++) {
         chuoiNgauNhien +=
           danhSachKyTu[Math.floor(Math.random() * danhSachKyTu.length)];
       }
 
-      // Lưu lại mã để tí check xem user nhập đúng không
       if (loaiForm === "DangKy") maLuuTruDangKy = chuoiNgauNhien;
       else maLuuTruDangNhap = chuoiNgauNhien;
 
-      // Bắt đầu vẽ chữ lên Canvas (Đã phóng to và căng lề chuẩn)
+    
       butVe.font = "bold 28px Courier New";
       butVe.fillStyle = "#2e59d9";
       butVe.textBaseline = "middle";
-      butVe.textAlign = "center"; // Đảm bảo chữ nằm cân chính giữa tọa độ X
-
-      // Làm rối: Xoay nghiêng từng chữ
+      butVe.textAlign = "center"; 
+      
       for (let i = 0; i < chuoiNgauNhien.length; i++) {
-        // ĐÃ FIX LỖI: Chia đều khung 140px, bắt đầu xa hơn (x = 30), cách nhau 40px
+      
         butVe.setTransform(
           1,
           Math.random() * 0.2 - 0.1,
@@ -678,7 +673,7 @@
       }
       butVe.setTransform(1, 0, 0, 1, 0, 0); // Reset lại khung vẽ
 
-      // Thêm 3 đường kẻ ngang dọc rối mắt (nhưng làm màu mờ nhạt đi để không che chữ)
+      
       for (let i = 0; i < 3; i++) {
         butVe.beginPath();
         butVe.moveTo(
@@ -689,7 +684,7 @@
           Math.random() * theCanvas.width,
           Math.random() * theCanvas.height
         );
-        butVe.strokeStyle = "#cbd5e1"; // Màu xám nhạt
+        butVe.strokeStyle = "#cbd5e1";
         butVe.stroke();
       }
     }
@@ -704,13 +699,13 @@
         const maNguoiDungNhap =
           document.getElementById("nhap_captcha_dk").value;
 
-        // Check độ dài mật khẩu
+      
         if (matKhau.length < 6) {
           suKien.preventDefault(); // Lệnh này giúp chặn Form không cho gửi dữ liệu đi
           hienThiThongBao("Mật khẩu phải chứa ít nhất 6 ký tự!", "error");
           return;
         }
-        // Check khớp mật khẩu
+     
         if (matKhau !== nhapLaiMatKhau) {
           suKien.preventDefault();
           hienThiThongBao("Mật khẩu nhập lại không khớp!", "error");
@@ -720,8 +715,8 @@
         if (maNguoiDungNhap.toLowerCase() !== maLuuTruDangKy.toLowerCase()) {
           suKien.preventDefault();
           hienThiThongBao("Mã Captcha không chính xác!", "error");
-          taoMaXacNhan("DangKy"); // Gõ sai thì cho đổi mã mới luôn
-          document.getElementById("nhap_captcha_dk").value = ""; // Xóa trắng ô nhập
+          taoMaXacNhan("DangKy"); 
+          document.getElementById("nhap_captcha_dk").value = ""; 
           return;
         }
       });
