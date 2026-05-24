@@ -29,9 +29,7 @@ include('ketnoi.php');
 
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
 $limit = 6;
-
 $offset = ($page - 1) * $limit;
 
 

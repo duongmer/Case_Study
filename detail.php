@@ -413,7 +413,7 @@ include("menu.php");
 
                 </a>
 
-                <a href="#"
+                <a href="https://zalo.me/<?php echo  $row["phone"]; ?>"
                    class="btn btn-outline-warning w-100">
 
                     <i class="bi bi-chat-dots-fill me-2"></i>
